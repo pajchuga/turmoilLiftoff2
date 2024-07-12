@@ -38,7 +38,7 @@ public class GameStateManager {
         gameStateStack.push(getState(gameStateType));
     }
 
-    //helper
+    //TODO Better handle of the states needed
     private GameState getState(GameStateType gameStateType) {
         switch (gameStateType) {
             case INIT:

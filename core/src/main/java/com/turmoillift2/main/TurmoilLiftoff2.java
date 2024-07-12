@@ -37,6 +37,7 @@ public class TurmoilLiftoff2 extends Game {
     private OrthographicCamera camera;
     private FitViewport viewport;
 
+    //TODO RefactorToPrivate
     public BitmapFont font;
     public Texture background;
     public TiledMap map;
@@ -80,7 +81,6 @@ public class TurmoilLiftoff2 extends Game {
     @Override
     public void resize(int width, int height) {
         viewport.update(width, height, true);
-
         spriteBatch.setProjectionMatrix(camera.combined);
     }
 
