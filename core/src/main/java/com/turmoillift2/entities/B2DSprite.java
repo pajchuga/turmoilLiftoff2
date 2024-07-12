@@ -8,7 +8,7 @@ import com.turmoillift2.handlers.MyAnimation;
 
 import static com.turmoillift2.handlers.B2DVars.*;
 
-public class B2DSprite {
+public abstract class B2DSprite {
     protected Body body;
     protected MyAnimation animation;
     protected float width;
@@ -28,6 +28,7 @@ public class B2DSprite {
     }
 
     public void update(float dt) {
+        regulateTime(dt);
         animation.update(dt);
     }
 
@@ -56,4 +57,6 @@ public class B2DSprite {
     public float getHeight() {
         return height;
     }
+
+    public abstract void regulateTime(float dt) ;
 }
