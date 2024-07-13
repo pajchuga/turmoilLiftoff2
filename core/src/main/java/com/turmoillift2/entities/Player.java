@@ -1,6 +1,5 @@
 package com.turmoillift2.entities;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.physics.box2d.Body;
@@ -9,31 +8,33 @@ import com.turmoillift2.main.TurmoilLiftoff2;
 import static com.turmoillift2.handlers.B2DVars.PPM;
 
 public class Player extends B2DSprite {
-    float timer_t = 1/10f; // testing out different values
-    float timer = timer_t;
-    boolean canMove = true;
+    private float timerMove_t = 1 / 10f; // testing out different values
+    private float timerMove = timerMove_t;
 
+    private boolean canMove = true;
+    private PlayerState state = PlayerState.IDLE;
 
     public Player(Body body) {
         super(body);
-
-        Texture tex = TurmoilLiftoff2.resource.getTexture("character");
-        TextureRegion[] textureRegions = TextureRegion.split(tex, 32, 32)[0];
-        setAnimation(textureRegions, 1 / 2f);
+        setStateAnimation();
     }
 
     @Override
     public void regulateTime(float dt) {
-        if (timer > 0) {
-            timer -= dt;
+        if (state == PlayerState.ATTACKING && animation.getTimesPlayed() > 0) {
+            state = PlayerState.IDLE;
+            setStateAnimation();
+        }
+        if (timerMove > 0) {
+            timerMove -= dt;
         } else {
             canMove = true;
-            timer = timer_t;
+            timerMove = timerMove_t;
         }
     }
 
     public void moveUp() {
-        if(!canMove) return;
+        if (!canMove) return;
 
         float moveUnits = body.getPosition().y + 64f / PPM;
         if (moveUnits * PPM >= TurmoilLiftoff2.WORLD_HEIGHT) {
@@ -44,7 +45,7 @@ public class Player extends B2DSprite {
     }
 
     public void moveDown() {
-        if(!canMove) return;
+        if (!canMove) return;
 
         float moveUnits = body.getPosition().y - 64f / PPM;
         if (moveUnits * PPM <= 0) {
@@ -52,6 +53,29 @@ public class Player extends B2DSprite {
         }
         body.setTransform(body.getPosition().x, body.getPosition().y - 64f / PPM, 0);
         canMove = false;
+    }
+
+    public void attack() {
+        if (state == PlayerState.ATTACKING) return;
+        state = PlayerState.ATTACKING;
+        setStateAnimation();
+    }
+
+    private void setStateAnimation() {
+        Texture tex;
+        TextureRegion[] textureRegions;
+        switch (state) {
+            case IDLE:
+                tex = TurmoilLiftoff2.resource.getTexture("character");
+                textureRegions = TextureRegion.split(tex, 32, 32)[0];
+                setAnimation(textureRegions, 1 / 2f, this.animation);
+                return;
+            case ATTACKING:
+                tex = TurmoilLiftoff2.resource.getTexture("characterAttack");
+                textureRegions = TextureRegion.split(tex, 32, 32)[0];
+                setAnimation(textureRegions, 1 / 12f, this.animation);
+        }
+
     }
 
     public void lookLeft() {

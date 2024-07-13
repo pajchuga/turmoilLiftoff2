@@ -4,13 +4,14 @@ public class MyInput {
     public static boolean[] keys;
     public static boolean[] pkeys;
 
-    public static final int NUM_KEYS = 6;
+    public static final int NUM_KEYS = 7;
     public static final int PAUSE_BUTTON = 0;
     public static final int PLAY_BUTTON = 1;
     public static final int UP_BUTTON = 2;
     public static final int DOWN_BUTTON = 3;
     public static final int LEFT_BUTTON = 4;
     public static final int RIGHT_BUTTON = 5;
+    public static final int ATTACK_BUTTON = 6;
 
     static {
         keys = new boolean[NUM_KEYS];

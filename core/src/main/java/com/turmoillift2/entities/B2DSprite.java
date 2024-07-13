@@ -21,7 +21,7 @@ public abstract class B2DSprite {
         orientation = EntityOrientation.RIGHT;
     }
 
-    public void setAnimation(TextureRegion[] region, float delay) {
+    public void setAnimation(TextureRegion[] region, float delay, MyAnimation animation) {
         animation.setFrames(region, delay);
         width = region[0].getRegionWidth();
         height = region[0].getRegionHeight();
@@ -58,5 +58,6 @@ public abstract class B2DSprite {
         return height;
     }
 
-    public abstract void regulateTime(float dt) ;
+    public abstract void regulateTime(float dt);
+
 }
