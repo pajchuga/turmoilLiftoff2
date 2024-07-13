@@ -23,7 +23,7 @@ import com.turmoillift2.handlers.MyInputProcessor;
 public class TurmoilLiftoff2 extends Game {
 
     // public game constants
-    public static final String TITLE = "Turmoil_Liftoff";
+    public static final String TITLE = "WIZARDS TURMOIL";
     public static final int WORLD_WIDTH = 640;
     public static final int WORLD_HEIGHT = 480;
     public static final float SCALE = 1.5f;
@@ -64,6 +64,7 @@ public class TurmoilLiftoff2 extends Game {
         tmr = new OrthogonalTiledMapRenderer(map);
         resource = new Content();
         resource.loadTexture("character.png", "character");
+        resource.loadTexture("characterAttack.png", "characterAttack");
 
     }
 

@@ -59,6 +59,9 @@ public class Play extends GameState {
         if (MyInput.isPressed(MyInput.RIGHT_BUTTON)) {
             player.lookRight();
         }
+        if (MyInput.isDown(MyInput.ATTACK_BUTTON)) {
+            player.attack();
+        }
     }
 
     @Override
