@@ -4,11 +4,18 @@ package com.turmoillift2.states;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
+import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.Pool;
+import com.badlogic.gdx.utils.Pools;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.turmoillift2.entities.Player;
+import com.turmoillift2.entities.PlayerState;
+import com.turmoillift2.entities.Projectile;
 import com.turmoillift2.handlers.GameStateManager;
 import com.turmoillift2.handlers.MyInput;
 import com.turmoillift2.main.TurmoilLiftoff2;
+
+import java.util.LinkedList;
 
 import static com.turmoillift2.handlers.B2DVars.*;
 
@@ -17,7 +24,8 @@ public class Play extends GameState {
     private Box2DDebugRenderer b2drDebug;
     private OrthographicCamera b2DCam;
     private Player player;
-
+    private Pool<Projectile> projectilePool;
+    private final LinkedList<Projectile> activeProjectiles = new LinkedList<>();
 
     public Play(GameStateManager gsm) {
         super(gsm);
@@ -40,6 +48,13 @@ public class Play extends GameState {
 
         player = new Player(body);
 
+        projectilePool = new Pool<Projectile>() {
+            @Override
+            protected Projectile newObject() {
+                return new Projectile(body);
+            }
+        };
+        projectilePool.fill(10);
     }
 
     @Override
@@ -59,8 +74,13 @@ public class Play extends GameState {
         if (MyInput.isPressed(MyInput.RIGHT_BUTTON)) {
             player.lookRight();
         }
-        if (MyInput.isDown(MyInput.ATTACK_BUTTON)) {
+        if (MyInput.isPressed(MyInput.ATTACK_BUTTON)) {
+            if (player.getState() == PlayerState.ATTACKING) return;
+            Projectile projectile = projectilePool.obtain();
+            projectile.setOrientation(player.getOrientation());
+            activeProjectiles.add(projectile);
             player.attack();
+            projectile.setBody();
         }
     }
 
@@ -70,6 +90,10 @@ public class Play extends GameState {
 
         world.step(dt, 6, 2);
         player.update(dt);
+        for (Projectile projectile : activeProjectiles) {
+            projectile.update(dt);
+        }
+
     }
 
     @Override
@@ -90,6 +114,9 @@ public class Play extends GameState {
 
 
         player.render(spriteBatch);
+        for (Projectile projectile : activeProjectiles) {
+            projectile.render(spriteBatch);
+        }
         b2drDebug.render(world, b2DCam.combined);
 
     }
@@ -97,5 +124,9 @@ public class Play extends GameState {
     @Override
     public void dispose() {
 
+    }
+
+    public World getWorld() {
+        return world;
     }
 }
