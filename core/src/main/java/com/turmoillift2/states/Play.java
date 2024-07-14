@@ -5,9 +5,8 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.Array;
-import com.badlogic.gdx.utils.Pool;
-import com.badlogic.gdx.utils.Pools;
 import com.badlogic.gdx.utils.ScreenUtils;
+import com.turmoillift2.entities.Enemy;
 import com.turmoillift2.entities.Player;
 import com.turmoillift2.entities.PlayerState;
 import com.turmoillift2.entities.Projectile;
@@ -15,15 +14,14 @@ import com.turmoillift2.handlers.GameStateManager;
 import com.turmoillift2.handlers.MyInput;
 import com.turmoillift2.main.TurmoilLiftoff2;
 
-import java.util.LinkedList;
-
-import static com.turmoillift2.handlers.B2DVars.*;
+import static com.turmoillift2.handlers.B2DVars.PPM;
 
 public class Play extends GameState {
     private World world;
     private Box2DDebugRenderer b2drDebug;
     private OrthographicCamera b2DCam;
     private Player player;
+    private Enemy enemy;
     private final Array<Projectile> activeProjectiles = new Array<>();
     private final Array<Projectile> inactiveProjectiles = new Array<>();
 
@@ -31,22 +29,15 @@ public class Play extends GameState {
         super(gsm);
         world = new World(new Vector2(0, -9.81f), true);
         b2drDebug = new Box2DDebugRenderer();
-        BodyDef bodyDef = new BodyDef();
-        bodyDef.position.set((float) TurmoilLiftoff2.WORLD_WIDTH / 2 / PPM, (float) TurmoilLiftoff2.WORLD_HEIGHT / 2 / PPM);
-        bodyDef.type = BodyDef.BodyType.StaticBody;
-        Body body = world.createBody(bodyDef);
 
-        PolygonShape shape = new PolygonShape();
-        shape.setAsBox((float) 10 / PPM, (float) 14 / PPM);
+        // create player
+        createPlayer();
 
-        FixtureDef fdef = new FixtureDef();
-        fdef.shape = shape;
-        body.createFixture(fdef);
+        createEnemy();
 
         b2DCam = new OrthographicCamera();
         b2DCam.setToOrtho(false, (float) TurmoilLiftoff2.WORLD_WIDTH / PPM, (float) TurmoilLiftoff2.WORLD_HEIGHT / PPM);
 
-        player = new Player(body);
     }
 
     @Override
@@ -81,6 +72,7 @@ public class Play extends GameState {
         handleInput();
         world.step(dt, 6, 3);
         player.update(dt);
+        enemy.update(dt);
         for (Projectile projectile : activeProjectiles) {
             if (projectile.isHit()) {
                 inactiveProjectiles.add(projectile);
@@ -95,32 +87,70 @@ public class Play extends GameState {
         ScreenUtils.clear(0.37f, 0.75f, 0.85f, 1);
         spriteBatch.setProjectionMatrix(camera.combined);
 
-
+        // start batch draw
         spriteBatch.begin();
 
+        //render map/arena
         game.tmr.setView(camera);
         game.tmr.render();
 
-
+        //render font
         game.font.draw(spriteBatch, "PLAY STATE", 5, 20);
-
         spriteBatch.end();
+        // end batch draw
 
-
+        //render player
         player.render(spriteBatch);
+        enemy.render(spriteBatch);
+
+        //render projectiles
         for (Projectile projectile : activeProjectiles) {
             projectile.render(spriteBatch);
         }
+
+        //render debug boxes
         b2drDebug.render(world, b2DCam.combined);
 
     }
 
     @Override
     public void dispose() {
-
     }
 
     public World getWorld() {
         return world;
+    }
+
+    private void createPlayer() {
+        BodyDef bodyDef = new BodyDef();
+        bodyDef.position.set((float) TurmoilLiftoff2.WORLD_WIDTH / 2 / PPM, (float) TurmoilLiftoff2.WORLD_HEIGHT / 2 / PPM);
+        bodyDef.type = BodyDef.BodyType.StaticBody;
+        Body body = world.createBody(bodyDef);
+
+        PolygonShape shape = new PolygonShape();
+        shape.setAsBox((float) 10 / PPM, (float) 14 / PPM);
+
+        FixtureDef fdef = new FixtureDef();
+        fdef.shape = shape;
+        body.createFixture(fdef);
+
+        player = new Player(body);
+    }
+
+    private void createEnemy() {
+        BodyDef bodyDef = new BodyDef();
+        bodyDef.position.set((float) TurmoilLiftoff2.WORLD_WIDTH / 2 / PPM, (float) TurmoilLiftoff2.WORLD_HEIGHT / 2 / PPM);
+
+        bodyDef.type = BodyDef.BodyType.StaticBody;
+        Body body = world.createBody(bodyDef);
+
+        PolygonShape shape = new PolygonShape();
+        shape.setAsBox((float) 14 / PPM, (float) 14 / PPM);
+
+        FixtureDef fdef = new FixtureDef();
+        fdef.shape = shape;
+        body.createFixture(fdef);
+
+        enemy = new Enemy(body);
     }
 }

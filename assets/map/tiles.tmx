@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.0" orientation="orthogonal" renderorder="right-down" width="20" height="15" tilewidth="32" tileheight="32" infinite="0" nextlayerid="5" nextobjectid="15">
+<map version="1.10" tiledversion="1.11.0" orientation="orthogonal" renderorder="right-down" width="20" height="15" tilewidth="32" tileheight="32" infinite="0" nextlayerid="5" nextobjectid="19">
  <tileset firstgid="1" name="tiles" tilewidth="32" tileheight="32" tilecount="156" columns="13">
   <image source="tiles.png" width="416" height="384"/>
  </tileset>
@@ -41,47 +41,89 @@
 0,0,0,0,0,0,0,0,0,131,133,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
- <objectgroup id="4" name="SpawnPoints">
-  <object id="1" x="590" y="46">
+ <objectgroup id="4" name="SpawnPoints" offsetx="0.666667" offsety="0.666667">
+  <object id="1" name="row1right" x="591.333" y="50">
+   <properties>
+    <property name="row" type="int" value="1"/>
+   </properties>
    <point/>
   </object>
-  <object id="2" x="49" y="48">
+  <object id="2" name="row1left" x="51.3333" y="46.3333">
+   <properties>
+    <property name="row" type="int" value="1"/>
+   </properties>
    <point/>
   </object>
-  <object id="3" x="49" y="111">
+  <object id="3" name="row2left" x="49.6667" y="113.667">
+   <properties>
+    <property name="row" type="int" value="2"/>
+   </properties>
    <point/>
   </object>
-  <object id="4" x="591" y="110">
+  <object id="4" name="row2right" x="592.333" y="117.333">
+   <properties>
+    <property name="row" type="int" value="2"/>
+   </properties>
    <point/>
   </object>
-  <object id="5" x="49" y="176">
+  <object id="5" name="row3left" x="48.6667" y="175">
+   <properties>
+    <property name="row" type="int" value="3"/>
+   </properties>
    <point/>
   </object>
-  <object id="6" x="594" y="176">
+  <object id="6" name="row3right" x="592" y="177.333">
+   <properties>
+    <property name="row" type="int" value="3"/>
+   </properties>
    <point/>
   </object>
-  <object id="7" x="50" y="240">
+  <object id="7" name="row4left" x="50" y="240">
+   <properties>
+    <property name="row" type="int" value="4"/>
+   </properties>
    <point/>
   </object>
-  <object id="8" x="593" y="242">
+  <object id="8" name="row4right" x="593" y="242">
+   <properties>
+    <property name="row" type="int" value="4"/>
+   </properties>
    <point/>
   </object>
-  <object id="9" x="52" y="307">
+  <object id="9" name="row5left" x="52" y="307">
+   <properties>
+    <property name="row" type="int" value="5"/>
+   </properties>
    <point/>
   </object>
-  <object id="10" x="592" y="307">
+  <object id="10" name="row5right" x="592.667" y="306.333">
+   <properties>
+    <property name="row" type="int" value="5"/>
+   </properties>
    <point/>
   </object>
-  <object id="11" x="592" y="370">
+  <object id="11" name="row6right" x="593.333" y="368.667">
+   <properties>
+    <property name="row" type="int" value="6"/>
+   </properties>
    <point/>
   </object>
-  <object id="12" x="52" y="371">
+  <object id="12" name="row6left" x="52" y="371">
+   <properties>
+    <property name="row" type="int" value="6"/>
+   </properties>
    <point/>
   </object>
-  <object id="13" x="53" y="434">
+  <object id="13" name="row7eft" x="53" y="434">
+   <properties>
+    <property name="row" type="int" value="0"/>
+   </properties>
    <point/>
   </object>
-  <object id="14" x="592" y="433">
+  <object id="14" name="row7right" x="592" y="433">
+   <properties>
+    <property name="row" type="int" value="7"/>
+   </properties>
    <point/>
   </object>
  </objectgroup>
