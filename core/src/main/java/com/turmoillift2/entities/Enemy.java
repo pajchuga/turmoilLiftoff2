@@ -9,6 +9,7 @@ import com.turmoillift2.main.TurmoilLiftoff2;
 import static com.turmoillift2.handlers.B2DVars.*;
 
 public class Enemy extends B2DSprite{
+    // TODO finish up beetle enemy class extended from this one
     public Enemy(Body body) {
         super(body);
         body.setType(BodyDef.BodyType.DynamicBody);
