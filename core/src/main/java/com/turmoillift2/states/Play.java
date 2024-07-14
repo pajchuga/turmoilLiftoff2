@@ -93,6 +93,7 @@ public class Play extends GameState {
         for (Projectile projectile : activeProjectiles) {
             projectile.update(dt);
         }
+        //TODO remove projectiles that hit
 
     }
 

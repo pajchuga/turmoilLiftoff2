@@ -34,7 +34,7 @@ public class Projectile extends B2DSprite implements Pool.Poolable {
         int flipFactor = flip ? -1 : 1;
         Vector2 force = new Vector2(2.8f * flipFactor, 0);
         BodyDef bodyDef = new BodyDef();
-        bodyDef.position.set(this.body.getPosition().x + 10f / PPM , this.body.getPosition().y);
+        bodyDef.position.set(this.body.getPosition().x + flipFactor * 15f / PPM , this.body.getPosition().y);
         bodyDef.type = BodyDef.BodyType.DynamicBody;
         Body body = this.getBody().getWorld().createBody(bodyDef);
 
@@ -43,12 +43,9 @@ public class Projectile extends B2DSprite implements Pool.Poolable {
 
         FixtureDef fdef = new FixtureDef();
         fdef.shape = shape;
-//        fdef.isSensor = true;
+        fdef.isSensor = true;
+        //TODO mask bits for collisions (had trouble with GWT be wary)
 
-        Filter filter = new Filter();
-        filter.maskBits = ENEMY_BIT;
-        filter.categoryBits = PROJECTILE_BIT;
-        fdef.filter.set(filter);
         body.createFixture(fdef);
         body.setBullet(true);
         body.setLinearVelocity(force);
