@@ -4,11 +4,18 @@ package com.turmoillift2.states;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
+import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.Pool;
+import com.badlogic.gdx.utils.Pools;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.turmoillift2.entities.Player;
+import com.turmoillift2.entities.PlayerState;
+import com.turmoillift2.entities.Projectile;
 import com.turmoillift2.handlers.GameStateManager;
 import com.turmoillift2.handlers.MyInput;
 import com.turmoillift2.main.TurmoilLiftoff2;
+
+import java.util.LinkedList;
 
 import static com.turmoillift2.handlers.B2DVars.*;
 
@@ -17,7 +24,8 @@ public class Play extends GameState {
     private Box2DDebugRenderer b2drDebug;
     private OrthographicCamera b2DCam;
     private Player player;
-
+    private final Array<Projectile> activeProjectiles = new Array<>();
+    private final Array<Projectile> inactiveProjectiles = new Array<>();
 
     public Play(GameStateManager gsm) {
         super(gsm);
@@ -39,7 +47,6 @@ public class Play extends GameState {
         b2DCam.setToOrtho(false, (float) TurmoilLiftoff2.WORLD_WIDTH / PPM, (float) TurmoilLiftoff2.WORLD_HEIGHT / PPM);
 
         player = new Player(body);
-
     }
 
     @Override
@@ -59,22 +66,33 @@ public class Play extends GameState {
         if (MyInput.isPressed(MyInput.RIGHT_BUTTON)) {
             player.lookRight();
         }
-        if (MyInput.isDown(MyInput.ATTACK_BUTTON)) {
+        if (MyInput.isPressed(MyInput.ATTACK_BUTTON)) {
+            if (player.getState() == PlayerState.ATTACKING) return; // comment for infinite fire rate
             player.attack();
+            Projectile projectile = new Projectile(player.getBody());
+            projectile.setOrientation(player.getOrientation());
+            projectile.setBody();
+            activeProjectiles.add(projectile);
         }
     }
 
     @Override
     public void update(float dt) {
         handleInput();
-
-        world.step(dt, 6, 2);
+        world.step(dt, 6, 3);
         player.update(dt);
+        for (Projectile projectile : activeProjectiles) {
+            if (projectile.isHit()) {
+                inactiveProjectiles.add(projectile);
+            }
+            projectile.update(dt);
+        }
+        activeProjectiles.removeAll(inactiveProjectiles, true);
     }
 
     @Override
     public void render() {
-        ScreenUtils.clear(0.47f, 0.25f, 0.55f, 1);
+        ScreenUtils.clear(0.37f, 0.75f, 0.85f, 1);
         spriteBatch.setProjectionMatrix(camera.combined);
 
 
@@ -90,6 +108,9 @@ public class Play extends GameState {
 
 
         player.render(spriteBatch);
+        for (Projectile projectile : activeProjectiles) {
+            projectile.render(spriteBatch);
+        }
         b2drDebug.render(world, b2DCam.combined);
 
     }
@@ -97,5 +118,9 @@ public class Play extends GameState {
     @Override
     public void dispose() {
 
+    }
+
+    public World getWorld() {
+        return world;
     }
 }
