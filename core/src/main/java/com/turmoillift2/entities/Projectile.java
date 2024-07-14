@@ -9,7 +9,7 @@ import com.turmoillift2.main.TurmoilLiftoff2;
 
 import static com.turmoillift2.handlers.B2DVars.*;
 
-public class Projectile extends B2DSprite implements Pool.Poolable {
+public class Projectile extends B2DSprite {
     boolean hit = false;
 
     public Projectile(Body body) {
@@ -21,12 +21,10 @@ public class Projectile extends B2DSprite implements Pool.Poolable {
 
     @Override
     public void regulateTime(float dt) {
-
-    }
-
-    @Override
-    public void reset() {
-        hit = false;
+        float moveUnits = body.getPosition().x;
+        if (moveUnits * PPM >= TurmoilLiftoff2.WORLD_WIDTH || moveUnits * PPM <= 0) {
+            setHit();
+        }
     }
 
     public void setBody() {
@@ -34,7 +32,7 @@ public class Projectile extends B2DSprite implements Pool.Poolable {
         int flipFactor = flip ? -1 : 1;
         Vector2 force = new Vector2(2.8f * flipFactor, 0);
         BodyDef bodyDef = new BodyDef();
-        bodyDef.position.set(this.body.getPosition().x + flipFactor * 15f / PPM , this.body.getPosition().y);
+        bodyDef.position.set(this.body.getPosition().x + flipFactor * 5f / PPM , this.body.getPosition().y);
         bodyDef.type = BodyDef.BodyType.DynamicBody;
         Body body = this.getBody().getWorld().createBody(bodyDef);
 
@@ -56,4 +54,13 @@ public class Projectile extends B2DSprite implements Pool.Poolable {
     public void setOrientation(EntityOrientation orientation) {
         this.orientation = orientation;
     }
+
+    public boolean isHit() {
+        return hit;
+    }
+
+    public void setHit() {
+        hit = true;
+    }
+
 }

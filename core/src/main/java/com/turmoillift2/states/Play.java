@@ -24,8 +24,8 @@ public class Play extends GameState {
     private Box2DDebugRenderer b2drDebug;
     private OrthographicCamera b2DCam;
     private Player player;
-    private Pool<Projectile> projectilePool;
-    private final LinkedList<Projectile> activeProjectiles = new LinkedList<>();
+    private final Array<Projectile> activeProjectiles = new Array<>();
+    private final Array<Projectile> inactiveProjectiles = new Array<>();
 
     public Play(GameStateManager gsm) {
         super(gsm);
@@ -47,14 +47,6 @@ public class Play extends GameState {
         b2DCam.setToOrtho(false, (float) TurmoilLiftoff2.WORLD_WIDTH / PPM, (float) TurmoilLiftoff2.WORLD_HEIGHT / PPM);
 
         player = new Player(body);
-
-        projectilePool = new Pool<Projectile>() {
-            @Override
-            protected Projectile newObject() {
-                return new Projectile(body);
-            }
-        };
-        projectilePool.fill(10);
     }
 
     @Override
@@ -75,31 +67,32 @@ public class Play extends GameState {
             player.lookRight();
         }
         if (MyInput.isPressed(MyInput.ATTACK_BUTTON)) {
-            if (player.getState() == PlayerState.ATTACKING) return;
-            Projectile projectile = projectilePool.obtain();
-            projectile.setOrientation(player.getOrientation());
-            activeProjectiles.add(projectile);
+            if (player.getState() == PlayerState.ATTACKING) return; // comment for infinite fire rate
             player.attack();
+            Projectile projectile = new Projectile(player.getBody());
+            projectile.setOrientation(player.getOrientation());
             projectile.setBody();
+            activeProjectiles.add(projectile);
         }
     }
 
     @Override
     public void update(float dt) {
         handleInput();
-
-        world.step(dt, 6, 2);
+        world.step(dt, 6, 3);
         player.update(dt);
         for (Projectile projectile : activeProjectiles) {
+            if (projectile.isHit()) {
+                inactiveProjectiles.add(projectile);
+            }
             projectile.update(dt);
         }
-        //TODO remove projectiles that hit
-
+        activeProjectiles.removeAll(inactiveProjectiles, true);
     }
 
     @Override
     public void render() {
-        ScreenUtils.clear(0.47f, 0.25f, 0.55f, 1);
+        ScreenUtils.clear(0.37f, 0.75f, 0.85f, 1);
         spriteBatch.setProjectionMatrix(camera.combined);
 
 

@@ -56,7 +56,6 @@ public class Player extends B2DSprite {
     }
 
     public void attack() {
-        if (state == PlayerState.ATTACKING) return;
         state = PlayerState.ATTACKING;
         setStateAnimation();
     }
@@ -68,7 +67,7 @@ public class Player extends B2DSprite {
             case IDLE:
                 tex = TurmoilLiftoff2.resource.getTexture("character");
                 textureRegions = TextureRegion.split(tex, 32, 32)[0];
-                setAnimation(textureRegions, 1 / 2f);
+                setAnimation(textureRegions, 1 / 2.8f);
                 return;
             case ATTACKING:
                 tex = TurmoilLiftoff2.resource.getTexture("characterAttack");
