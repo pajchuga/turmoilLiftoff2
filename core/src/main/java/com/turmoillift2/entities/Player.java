@@ -89,8 +89,4 @@ public class Player extends B2DSprite {
         return state;
     }
 
-    public EntityOrientation getOrientation() {
-        return orientation;
-    }
-
 }

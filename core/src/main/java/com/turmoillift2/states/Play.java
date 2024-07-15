@@ -109,7 +109,7 @@ public class Play extends GameState {
         }
 
         //render debug boxes
-        b2drDebug.render(world, b2DCam.combined);
+//        b2drDebug.render(world, b2DCam.combined);
 
     }
 

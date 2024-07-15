@@ -42,9 +42,18 @@ public abstract class B2DSprite {
         sb.end();
     }
 
+    public void setOrientation(EntityOrientation orientation) {
+        this.orientation = orientation;
+    }
+
     public Body getBody() {
         return body;
     }
+
+    public EntityOrientation getOrientation() {
+        return orientation;
+    }
+
 
     public Vector2 getPosition() {
         return body.getPosition();
