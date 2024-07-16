@@ -13,7 +13,7 @@ public class GwtLauncher extends GwtApplication {
             GwtApplicationConfiguration cfg = new GwtApplicationConfiguration(true);
             cfg.padVertical = 0;
             cfg.padHorizontal = 0;
-            //return cfg;
+            //`return cfg;`
             // If you want a fixed size application, comment out the above resizable section,
             // and uncomment below:
             return new GwtApplicationConfiguration(Math.round(TurmoilLiftoff2.WORLD_WIDTH * 1.25f), Math.round(TurmoilLiftoff2.WORLD_HEIGHT * 1.25f));
