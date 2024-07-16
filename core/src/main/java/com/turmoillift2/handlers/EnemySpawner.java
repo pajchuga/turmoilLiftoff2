@@ -12,7 +12,7 @@ import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
 
-import static com.turmoillift2.handlers.B2DVars.PPM;
+import static com.turmoillift2.handlers.B2DVars.*;
 
 public class EnemySpawner {
     private Set<Integer> availableRows = new HashSet<>();
@@ -79,15 +79,17 @@ public class EnemySpawner {
             location += "right";
             orientation = EntityOrientation.LEFT;
         }
+        // get desiered spawn point location by name
         MapObject objects = map.getLayers().get("SpawnPoints").getObjects().get(location);
 
+        // parse x and y information of object on Tiled map (My spawn points)
         xPosition = Float.parseFloat(objects.getProperties().get("x").toString());
         yPosition = Float.parseFloat(objects.getProperties().get("y").toString());
 
+        //define body def and set position, we divide by Pixel per meter unit so box2d body gets scaled
         BodyDef bodyDef = new BodyDef();
         bodyDef.position.set(xPosition / PPM, yPosition / PPM);
-
-        bodyDef.type = BodyDef.BodyType.StaticBody;
+        bodyDef.type = BodyDef.BodyType.DynamicBody;
         Body body = world.createBody(bodyDef);
 
         PolygonShape shape = new PolygonShape();
@@ -95,10 +97,14 @@ public class EnemySpawner {
 
         FixtureDef fdef = new FixtureDef();
         fdef.shape = shape;
-        body.createFixture(fdef);
+        //filter bits categoryBits sets what this body us type of (type of enemy)
+        fdef.filter.categoryBits = ENEMY_BIT;
+        //filters with what enemies detect collision (with both player and projectile bits
+        fdef.filter.maskBits = PROJECTILE_BIT | PLAYER_BIT;
 
         Enemy enemy = new Enemy(body, toRemove);
         enemy.setOrientation(orientation);
+        body.createFixture(fdef).setUserData(enemy);
         return enemy;
     }
 

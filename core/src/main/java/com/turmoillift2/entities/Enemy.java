@@ -10,18 +10,19 @@ import com.turmoillift2.main.TurmoilLiftoff2;
 import static com.turmoillift2.handlers.B2DVars.*;
 
 public class Enemy extends B2DSprite{
-    // TODO finish up beetle enemy class extended from this one
     protected boolean isAlive = true;
     protected float moveForce;
     protected int row;
+    int lives;
+
     public Enemy(Body body) {
         super(body);
-        body.setType(BodyDef.BodyType.DynamicBody);
+        this.lives = 2;
         body.setGravityScale(0);
         Texture tex = TurmoilLiftoff2.resource.getTexture("bettle");
         TextureRegion[] textureRegions = TextureRegion.split(tex, 32, 32)[0];
         setAnimation(textureRegions, 1 / 12f);
-        moveForce = 1.2f;
+        moveForce = 1.5f;
     }
 
     public Enemy(Body body, int row) {
@@ -39,12 +40,7 @@ public class Enemy extends B2DSprite{
         if (this.getBody().getPosition().x * PPM  - 32 <=0 && orientation == EntityOrientation.LEFT) {
             flipOrientation();
         }
-
         this.getBody().setLinearVelocity(new Vector2(moveForce * flipFactor , 0));
-    }
-
-    public void setOrientation(EntityOrientation orientation) {
-        this.orientation = orientation;
     }
 
     private void flipOrientation() {
@@ -53,5 +49,21 @@ public class Enemy extends B2DSprite{
         } else {
             orientation = EntityOrientation.LEFT;
         }
+    }
+
+    public int getRow() {
+        return row;
+    }
+
+    public void kill() {
+        isAlive = false;
+    }
+
+    public boolean isAlive() {
+        return isAlive;
+    }
+
+    public void hit() {
+        if (--lives == 0) kill();
     }
 }
