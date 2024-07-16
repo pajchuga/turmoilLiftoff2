@@ -54,7 +54,6 @@ public abstract class B2DSprite {
         return orientation;
     }
 
-
     public Vector2 getPosition() {
         return body.getPosition();
     }

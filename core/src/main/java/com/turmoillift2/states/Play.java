@@ -14,19 +14,22 @@ import com.turmoillift2.entities.PlayerState;
 import com.turmoillift2.entities.Projectile;
 import com.turmoillift2.handlers.EnemySpawner;
 import com.turmoillift2.handlers.GameStateManager;
+import com.turmoillift2.handlers.MyContactListener;
 import com.turmoillift2.handlers.MyInput;
 import com.turmoillift2.main.TurmoilLiftoff2;
 
-import static com.turmoillift2.handlers.B2DVars.PPM;
+import static com.turmoillift2.handlers.B2DVars.*;
 
 public class Play extends GameState {
     private World world;
+    private MyContactListener contactListener;
     private Box2DDebugRenderer b2drDebug;
     private OrthographicCamera b2DCam;
     private Player player;
     private final Array<Projectile> activeProjectiles = new Array<>();
     private final Array<Projectile> inactiveProjectiles = new Array<>();
     private final Array<Enemy> enemies = new Array<>();
+    private final Array<Enemy> killedEnemies = new Array<>();
 
     private EnemySpawner enemySpawner;
 
@@ -37,7 +40,9 @@ public class Play extends GameState {
     public Play(GameStateManager gsm) {
         super(gsm);
         world = new World(new Vector2(0, -9.81f), true);
+        contactListener = new MyContactListener();
         b2drDebug = new Box2DDebugRenderer();
+        world.setContactListener(contactListener);
 
         // create player
         createPlayer();
@@ -65,7 +70,7 @@ public class Play extends GameState {
         if (MyInput.isPressed(MyInput.RIGHT_BUTTON)) {
             player.lookRight();
         }
-        if (MyInput.isDown(MyInput.ATTACK_BUTTON)) {
+        if (MyInput.isPressed(MyInput.ATTACK_BUTTON)) {
             if (player.getState() == PlayerState.ATTACKING) return; // comment for infinite fire rate
             player.attack();
             Projectile projectile = new Projectile(player.getBody());
@@ -81,12 +86,12 @@ public class Play extends GameState {
         world.step(dt, 6, 3);
         player.update(dt);
         enemySpawner.update(dt);
-        for (Enemy enemy : enemies) {
-            enemy.update(dt);
-        }
+        handleEnemies(dt);
+
         for (Projectile projectile : activeProjectiles) {
             if (projectile.isHit()) {
                 inactiveProjectiles.add(projectile);
+                world.destroyBody(projectile.getBody());
             }
             projectile.update(dt);
         }
@@ -113,20 +118,20 @@ public class Play extends GameState {
         //render player
         player.render(spriteBatch);
 
+        //render enemies
         for(Enemy enemy : enemies) {
             enemy.render(spriteBatch);
         }
-
-        // render assets for parallax effect
-        game.tmr.render(lastLayers);
 
         //render projectiles
         for (Projectile projectile : activeProjectiles) {
             projectile.render(spriteBatch);
         }
 
+        // render assets for parallax effect
+        game.tmr.render(lastLayers);
         //render debug boxes
-        b2drDebug.render(world, b2DCam.combined);
+//        b2drDebug.render(world, b2DCam.combined);
 
     }
 
@@ -139,6 +144,7 @@ public class Play extends GameState {
     }
 
     private void createPlayer() {
+        // define body of player and set position
         BodyDef bodyDef = new BodyDef();
         bodyDef.position.set((float) TurmoilLiftoff2.WORLD_WIDTH / 2 / PPM, (float) TurmoilLiftoff2.WORLD_HEIGHT / 2 / PPM);
         bodyDef.type = BodyDef.BodyType.StaticBody;
@@ -149,9 +155,24 @@ public class Play extends GameState {
 
         FixtureDef fdef = new FixtureDef();
         fdef.shape = shape;
-        body.createFixture(fdef);
-
+        fdef.filter.categoryBits = PLAYER_BIT;
+        fdef.filter.maskBits = ENEMY_BIT;
         player = new Player(body);
+
+        body.createFixture(fdef).setUserData(player);
+    }
+
+    private void handleEnemies(float dt) {
+        for (Enemy enemy : enemies) {
+            if (!enemy.isAlive()) {
+                killedEnemies.add(enemy);
+                enemySpawner.freeRow(enemy.getRow());
+                world.destroyBody(enemy.getBody());
+                continue;
+            }
+            enemy.update(dt);
+        }
+        enemies.removeAll(killedEnemies, true);
     }
 
 }

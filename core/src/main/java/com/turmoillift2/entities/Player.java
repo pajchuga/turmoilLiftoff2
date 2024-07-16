@@ -10,7 +10,7 @@ import static com.turmoillift2.handlers.B2DVars.PPM;
 public class Player extends B2DSprite {
     private float timerMove_t = 1 / 10f; // testing out different values
     private float timerMove = timerMove_t;
-
+    private float fireDelay = 1 / 12f; // fire rate is dependand on animation
     private boolean canMove = true;
     private PlayerState state = PlayerState.IDLE;
 
@@ -60,6 +60,10 @@ public class Player extends B2DSprite {
         setStateAnimation();
     }
 
+    public void hit() {
+        // TODO update hit system , add hit animation , add hit state, add lives
+    }
+
     private void setStateAnimation() {
         Texture tex;
         TextureRegion[] textureRegions;
@@ -67,12 +71,12 @@ public class Player extends B2DSprite {
             case IDLE:
                 tex = TurmoilLiftoff2.resource.getTexture("character");
                 textureRegions = TextureRegion.split(tex, 32, 32)[0];
-                setAnimation(textureRegions, 1 / 2.8f);
+                setAnimation(textureRegions, 1 / 4f);
                 return;
             case ATTACKING:
                 tex = TurmoilLiftoff2.resource.getTexture("characterAttack");
                 textureRegions = TextureRegion.split(tex, 32, 32)[0];
-                setAnimation(textureRegions, 1 / 12f);
+                setAnimation(textureRegions, fireDelay);
         }
 
     }

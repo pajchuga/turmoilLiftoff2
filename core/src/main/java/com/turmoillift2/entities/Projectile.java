@@ -3,14 +3,16 @@ package com.turmoillift2.entities;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.*;
-import com.badlogic.gdx.utils.Pool;
+import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.FixtureDef;
+import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.turmoillift2.main.TurmoilLiftoff2;
 
 import static com.turmoillift2.handlers.B2DVars.*;
 
 public class Projectile extends B2DSprite {
-    boolean hit = false;
+    private boolean hit = false;
 
     public Projectile(Body body) {
         super(body);
@@ -28,26 +30,31 @@ public class Projectile extends B2DSprite {
     }
 
     public void setBody() {
+        // if body is looking left flip asset
         boolean flip = (orientation == EntityOrientation.LEFT);
-        int flipFactor = flip ? -1 : 1;
-        Vector2 force = new Vector2(2.8f * flipFactor, 0);
+        int flipFactor = flip ? -1 : 1; // if projectile is looking left flip it to other side
+        Vector2 force = new Vector2(2.8f * flipFactor, 0); // speed of projectile 2.8f
+        // define body of projectile
         BodyDef bodyDef = new BodyDef();
         bodyDef.position.set(this.body.getPosition().x + flipFactor * 5f / PPM , this.body.getPosition().y);
         bodyDef.type = BodyDef.BodyType.DynamicBody;
         Body body = this.getBody().getWorld().createBody(bodyDef);
 
         PolygonShape shape = new PolygonShape();
-        shape.setAsBox((float) 16  / PPM, (float) 8 / PPM);
+        shape.setAsBox((float) 14  / PPM, (float) 8 / PPM); // size of projectile physics body
 
+        // define fixture definition (what type and with what colides, and it is sensor only (might change this not to be sensor for more interaction))
         FixtureDef fdef = new FixtureDef();
         fdef.shape = shape;
         fdef.isSensor = true;
-        //TODO mask bits for collisions (had trouble with GWT be wary)
+        fdef.filter.categoryBits = PROJECTILE_BIT;
+        fdef.filter.maskBits = ENEMY_BIT;
 
-        body.createFixture(fdef);
+        //set this projectile info to user data for easy handling
+        body.createFixture(fdef).setUserData(this);
         body.setBullet(true);
         body.setLinearVelocity(force);
-        body.setGravityScale(0);
+        body.setGravityScale(0); //ignores gravity
         this.body = body;
     }
 
