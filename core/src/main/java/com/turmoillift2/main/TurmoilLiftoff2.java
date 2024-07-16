@@ -30,7 +30,7 @@ public class TurmoilLiftoff2 extends Game {
     public static final float SCALE = 1.5f;
 
     // game engine (60fps) update time
-    public static final float TICK = 1 / 60f;
+    public static final float TICK = 1 / 144f;
     private float accum; // accumulator for steps (Only updates game if enough time has passed)
 
     // game fields for UI
