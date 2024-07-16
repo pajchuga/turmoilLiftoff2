@@ -13,6 +13,7 @@ public class Enemy extends B2DSprite{
     // TODO finish up beetle enemy class extended from this one
     protected boolean isAlive = true;
     protected float moveForce;
+    protected int row;
     public Enemy(Body body) {
         super(body);
         body.setType(BodyDef.BodyType.DynamicBody);
@@ -20,7 +21,12 @@ public class Enemy extends B2DSprite{
         Texture tex = TurmoilLiftoff2.resource.getTexture("bettle");
         TextureRegion[] textureRegions = TextureRegion.split(tex, 32, 32)[0];
         setAnimation(textureRegions, 1 / 12f);
-        moveForce = 1.6f;
+        moveForce = 1.2f;
+    }
+
+    public Enemy(Body body, int row) {
+        this(body);
+        this.row = row;
     }
 
     @Override
@@ -34,7 +40,11 @@ public class Enemy extends B2DSprite{
             flipOrientation();
         }
 
-        this.getBody().setLinearVelocity(new Vector2(moveForce * flipFactor * 60 * dt, 0));
+        this.getBody().setLinearVelocity(new Vector2(moveForce * flipFactor , 0));
+    }
+
+    public void setOrientation(EntityOrientation orientation) {
+        this.orientation = orientation;
     }
 
     private void flipOrientation() {

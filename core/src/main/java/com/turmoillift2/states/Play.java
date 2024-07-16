@@ -2,6 +2,8 @@ package com.turmoillift2.states;
 
 
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.maps.MapLayer;
+import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.Array;
@@ -10,6 +12,7 @@ import com.turmoillift2.entities.Enemy;
 import com.turmoillift2.entities.Player;
 import com.turmoillift2.entities.PlayerState;
 import com.turmoillift2.entities.Projectile;
+import com.turmoillift2.handlers.EnemySpawner;
 import com.turmoillift2.handlers.GameStateManager;
 import com.turmoillift2.handlers.MyInput;
 import com.turmoillift2.main.TurmoilLiftoff2;
@@ -21,9 +24,15 @@ public class Play extends GameState {
     private Box2DDebugRenderer b2drDebug;
     private OrthographicCamera b2DCam;
     private Player player;
-    private Enemy enemy;
     private final Array<Projectile> activeProjectiles = new Array<>();
     private final Array<Projectile> inactiveProjectiles = new Array<>();
+    private final Array<Enemy> enemies = new Array<>();
+
+    private EnemySpawner enemySpawner;
+
+    private int[] firstLayers = {0,1};
+    private int[] lastLayers = {2};
+
 
     public Play(GameStateManager gsm) {
         super(gsm);
@@ -32,8 +41,7 @@ public class Play extends GameState {
 
         // create player
         createPlayer();
-
-        createEnemy();
+        enemySpawner = new EnemySpawner(game.map,enemies,world);
 
         b2DCam = new OrthographicCamera();
         b2DCam.setToOrtho(false, (float) TurmoilLiftoff2.WORLD_WIDTH / PPM, (float) TurmoilLiftoff2.WORLD_HEIGHT / PPM);
@@ -57,7 +65,7 @@ public class Play extends GameState {
         if (MyInput.isPressed(MyInput.RIGHT_BUTTON)) {
             player.lookRight();
         }
-        if (MyInput.isPressed(MyInput.ATTACK_BUTTON)) {
+        if (MyInput.isDown(MyInput.ATTACK_BUTTON)) {
             if (player.getState() == PlayerState.ATTACKING) return; // comment for infinite fire rate
             player.attack();
             Projectile projectile = new Projectile(player.getBody());
@@ -72,7 +80,10 @@ public class Play extends GameState {
         handleInput();
         world.step(dt, 6, 3);
         player.update(dt);
-        enemy.update(dt);
+        enemySpawner.update(dt);
+        for (Enemy enemy : enemies) {
+            enemy.update(dt);
+        }
         for (Projectile projectile : activeProjectiles) {
             if (projectile.isHit()) {
                 inactiveProjectiles.add(projectile);
@@ -92,7 +103,7 @@ public class Play extends GameState {
 
         //render map/arena
         game.tmr.setView(camera);
-        game.tmr.render();
+        game.tmr.render(firstLayers);
 
         //render font
         game.font.draw(spriteBatch, "PLAY STATE", 5, 20);
@@ -101,7 +112,13 @@ public class Play extends GameState {
 
         //render player
         player.render(spriteBatch);
-        enemy.render(spriteBatch);
+
+        for(Enemy enemy : enemies) {
+            enemy.render(spriteBatch);
+        }
+
+        // render assets for parallax effect
+        game.tmr.render(lastLayers);
 
         //render projectiles
         for (Projectile projectile : activeProjectiles) {
@@ -109,7 +126,7 @@ public class Play extends GameState {
         }
 
         //render debug boxes
-//        b2drDebug.render(world, b2DCam.combined);
+        b2drDebug.render(world, b2DCam.combined);
 
     }
 
@@ -128,7 +145,7 @@ public class Play extends GameState {
         Body body = world.createBody(bodyDef);
 
         PolygonShape shape = new PolygonShape();
-        shape.setAsBox((float) 10 / PPM, (float) 14 / PPM);
+        shape.setAsBox((float) 9 / PPM, (float) 14 / PPM);
 
         FixtureDef fdef = new FixtureDef();
         fdef.shape = shape;
@@ -137,20 +154,4 @@ public class Play extends GameState {
         player = new Player(body);
     }
 
-    private void createEnemy() {
-        BodyDef bodyDef = new BodyDef();
-        bodyDef.position.set((float) TurmoilLiftoff2.WORLD_WIDTH / 2 / PPM, (float) TurmoilLiftoff2.WORLD_HEIGHT / 2 / PPM);
-
-        bodyDef.type = BodyDef.BodyType.StaticBody;
-        Body body = world.createBody(bodyDef);
-
-        PolygonShape shape = new PolygonShape();
-        shape.setAsBox((float) 14 / PPM, (float) 14 / PPM);
-
-        FixtureDef fdef = new FixtureDef();
-        fdef.shape = shape;
-        body.createFixture(fdef);
-
-        enemy = new Enemy(body);
-    }
 }

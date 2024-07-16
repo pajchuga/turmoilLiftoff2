@@ -28,8 +28,8 @@ public abstract class B2DSprite {
     }
 
     public void update(float dt) {
-        regulateTime(dt);
         animation.update(dt);
+        regulateTime(dt);
     }
 
     public void render(SpriteBatch sb) {

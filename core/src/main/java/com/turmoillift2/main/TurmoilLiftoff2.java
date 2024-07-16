@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
@@ -68,7 +69,6 @@ public class TurmoilLiftoff2 extends Game {
         resource.loadTexture("animations/bullet.png", "bullet");
         resource.loadTexture("animations/bettle.png", "bettle");
         resource.loadTexture("animations/bluebettle.png", "bluebettle");
-
     }
 
     @Override
