@@ -1,0 +1,105 @@
+package com.turmoillift2.handlers;
+
+import com.badlogic.gdx.maps.MapObject;
+import com.badlogic.gdx.maps.MapObjects;
+import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.physics.box2d.*;
+import com.badlogic.gdx.utils.Array;
+import com.turmoillift2.entities.Enemy;
+import com.turmoillift2.entities.EntityOrientation;
+
+import java.util.HashSet;
+import java.util.Random;
+import java.util.Set;
+
+import static com.turmoillift2.handlers.B2DVars.PPM;
+
+public class EnemySpawner {
+    private Set<Integer> availableRows = new HashSet<>();
+
+    {
+        availableRows.addAll(Set.of(1, 2, 3, 4, 5, 6, 7));
+    }
+
+    private TiledMap map;
+    private World world;
+    private Array<Enemy> enemies;
+
+    private float spawnDelay = 0.3f;
+    private float timer = 1f;
+    private String location = "";
+
+
+    public EnemySpawner(TiledMap map, Array<Enemy> enemies, World world) {
+        this.map = map;
+        this.enemies = enemies;
+        this.world = world;
+    }
+
+    public void update(float dt) {
+        if(availableRows.isEmpty()) return;
+        Enemy spawnedEnemy = spawn(dt);
+        if (spawnedEnemy == null) return;
+        enemies.add(spawnedEnemy);
+    }
+
+    public void freeRow(int i) {
+        availableRows.add(i);
+    }
+
+    private Enemy spawn(float dt) {
+        if (timer >= 0) {
+            timer -= dt;
+            return null;
+        }
+        timer = spawnDelay;
+        int randomIndex = new Random().nextInt(availableRows.size());
+        int i = 0;
+        int toRemove = 0;
+        for (Integer row : availableRows) {
+            if (i == randomIndex) {
+                toRemove = row;
+                break;
+            }
+            i++;
+        }
+        availableRows.remove(toRemove);
+        return createEnemy(Math.random(), toRemove);
+    }
+
+    private Enemy createEnemy(double randSide, int toRemove) {
+        location ="" + toRemove;
+        EntityOrientation orientation;
+        float xPosition;
+        float yPosition;
+        if (randSide >= 0.5) {// spawn left
+            location += "left";
+            orientation = EntityOrientation.RIGHT;
+        } else { // spawn right
+            location += "right";
+            orientation = EntityOrientation.LEFT;
+        }
+        MapObject objects = map.getLayers().get("SpawnPoints").getObjects().get(location);
+
+        xPosition = Float.parseFloat(objects.getProperties().get("x").toString());
+        yPosition = Float.parseFloat(objects.getProperties().get("y").toString());
+
+        BodyDef bodyDef = new BodyDef();
+        bodyDef.position.set(xPosition / PPM, yPosition / PPM);
+
+        bodyDef.type = BodyDef.BodyType.StaticBody;
+        Body body = world.createBody(bodyDef);
+
+        PolygonShape shape = new PolygonShape();
+        shape.setAsBox((float) 12 / PPM, (float) 12 / PPM);
+
+        FixtureDef fdef = new FixtureDef();
+        fdef.shape = shape;
+        body.createFixture(fdef);
+
+        Enemy enemy = new Enemy(body, toRemove);
+        enemy.setOrientation(orientation);
+        return enemy;
+    }
+
+}

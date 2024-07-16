@@ -51,10 +51,6 @@ public class Projectile extends B2DSprite {
         this.body = body;
     }
 
-    public void setOrientation(EntityOrientation orientation) {
-        this.orientation = orientation;
-    }
-
     public boolean isHit() {
         return hit;
     }
