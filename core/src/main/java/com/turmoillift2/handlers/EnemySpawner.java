@@ -104,6 +104,7 @@ public class EnemySpawner {
 
         Enemy enemy = new Enemy(body, toRemove);
         enemy.setOrientation(orientation);
+        enemy.setMoveForce(orientation);
         body.createFixture(fdef).setUserData(enemy);
         return enemy;
     }

@@ -1,5 +1,6 @@
 package com.turmoillift2.entities;
 
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
@@ -32,15 +33,16 @@ public class Enemy extends B2DSprite{
 
     @Override
     public void regulateTime(float dt) {
-        boolean flip = orientation == EntityOrientation.RIGHT;
-        int flipFactor = flip ? 1 : -1;
+
         if (this.getBody().getPosition().x * PPM  + 32 > TurmoilLiftoff2.WORLD_WIDTH && orientation == EntityOrientation.RIGHT) {
             flipOrientation();
+            setMoveForce(orientation);
         }
         if (this.getBody().getPosition().x * PPM  - 32 <=0 && orientation == EntityOrientation.LEFT) {
             flipOrientation();
+            setMoveForce(orientation);
         }
-        this.getBody().setLinearVelocity(new Vector2(moveForce * flipFactor , 0));
+
     }
 
     private void flipOrientation() {
@@ -65,5 +67,11 @@ public class Enemy extends B2DSprite{
 
     public void hit() {
         if (--lives == 0) kill();
+    }
+
+    public void setMoveForce(EntityOrientation orientation) {
+        boolean flip = orientation == EntityOrientation.RIGHT;
+        int flipFactor = flip ? 1 : -1;
+        this.getBody().setLinearVelocity(new Vector2(moveForce * flipFactor , 0));
     }
 }
