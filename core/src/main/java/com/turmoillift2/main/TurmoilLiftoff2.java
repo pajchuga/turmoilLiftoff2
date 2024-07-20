@@ -63,7 +63,7 @@ public class TurmoilLiftoff2 extends Game {
         resource = new Content();
         resource.loadTexture("animations/character.png", "character");
         resource.loadTexture("animations/characterFireAttack.png", "characterFireAttack");
-        resource.loadTexture("animations/bullet.png", "bullet");
+        resource.loadTexture("animations/fireballBullet.png", "bullet");
         resource.loadTexture("animations/bettle.png", "bettle");
         resource.loadTexture("animations/bettleRedHit.png", "bettleRedHit");
         resource.loadTexture("animations/bluebettle.png", "bluebettle");

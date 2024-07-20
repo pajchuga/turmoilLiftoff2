@@ -3,6 +3,7 @@ package com.turmoillift2.entities;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.turmoillift2.main.TurmoilLiftoff2;
 
 import static com.turmoillift2.handlers.B2DVars.PPM;
@@ -71,6 +72,7 @@ public class Player extends B2DSprite {
     public void hit() {
         if (state == PlayerState.DEAD) return;
         if (--lives <= 0) {
+            canMove = false;
             state = PlayerState.DEAD;
             setStateAnimation();
             return;

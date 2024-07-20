@@ -129,7 +129,6 @@ public class Play extends GameState {
         game.tmr.render(lastLayers);
         //render debug boxes
         b2drDebug.render(world, b2DCam.combined);
-
     }
 
     @Override

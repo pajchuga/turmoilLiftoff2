@@ -31,6 +31,7 @@ public class Enemy extends B2DSprite {
     @Override
     public void regulateTime(float dt) {
         if (state == EnemyState.HIT && animation.getTimesPlayed() > 0) {
+            setMoveForce(orientation);
             state = EnemyState.ATTACKING;
             setStateAnimation();
         }
