@@ -58,7 +58,7 @@ public class MyAnimation {
     }
 
     public boolean hasFinished() {
-       return  currentFrame == frames.length;
+        return timesPlayed > 0;
     }
 
 }

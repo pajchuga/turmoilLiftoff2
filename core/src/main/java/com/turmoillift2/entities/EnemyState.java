@@ -1,8 +1,7 @@
 package com.turmoillift2.entities;
 
-public enum PlayerState {
+public enum EnemyState {
     IDLE,
     ATTACKING,
-    HIT,
-    DEAD
+    HIT
 }

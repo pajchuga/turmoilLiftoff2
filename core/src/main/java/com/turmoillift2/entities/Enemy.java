@@ -1,28 +1,25 @@
 package com.turmoillift2.entities;
 
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
-import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.turmoillift2.main.TurmoilLiftoff2;
 
-import static com.turmoillift2.handlers.B2DVars.*;
+import static com.turmoillift2.handlers.B2DVars.PPM;
 
-public class Enemy extends B2DSprite{
+public class Enemy extends B2DSprite {
     protected boolean isAlive = true;
     protected float moveForce;
     protected int row;
-    int lives;
+    protected int lives;
+    protected EnemyState state = EnemyState.ATTACKING;
 
     public Enemy(Body body) {
         super(body);
         this.lives = 2;
         body.setGravityScale(0);
-        Texture tex = TurmoilLiftoff2.resource.getTexture("bettle");
-        TextureRegion[] textureRegions = TextureRegion.split(tex, 32, 32)[0];
-        setAnimation(textureRegions, 1 / 12f);
+        setStateAnimation();
         moveForce = 1.5f;
     }
 
@@ -33,12 +30,16 @@ public class Enemy extends B2DSprite{
 
     @Override
     public void regulateTime(float dt) {
+        if (state == EnemyState.HIT && animation.getTimesPlayed() > 0) {
+            state = EnemyState.ATTACKING;
+            setStateAnimation();
+        }
 
-        if (this.getBody().getPosition().x * PPM  + 32 > TurmoilLiftoff2.WORLD_WIDTH && orientation == EntityOrientation.RIGHT) {
+        if (this.getBody().getPosition().x * PPM + 32 > TurmoilLiftoff2.WORLD_WIDTH && orientation == EntityOrientation.RIGHT) {
             flipOrientation();
             setMoveForce(orientation);
         }
-        if (this.getBody().getPosition().x * PPM  - 32 <=0 && orientation == EntityOrientation.LEFT) {
+        if (this.getBody().getPosition().x * PPM - 32 <= 0 && orientation == EntityOrientation.LEFT) {
             flipOrientation();
             setMoveForce(orientation);
         }
@@ -66,12 +67,33 @@ public class Enemy extends B2DSprite{
     }
 
     public void hit() {
-        if (--lives == 0) kill();
+        state = EnemyState.HIT;
+        setStateAnimation();
+        if (--lives == 0) {
+            kill();
+        }
     }
 
     public void setMoveForce(EntityOrientation orientation) {
         boolean flip = orientation == EntityOrientation.RIGHT;
         int flipFactor = flip ? 1 : -1;
-        this.getBody().setLinearVelocity(new Vector2(moveForce * flipFactor , 0));
+        this.getBody().setLinearVelocity(new Vector2(moveForce * flipFactor, 0));
+    }
+
+    @Override
+    protected void setStateAnimation() {
+        Texture tex;
+        TextureRegion[] textureRegions;
+        switch (state) {
+            case ATTACKING:
+                tex = TurmoilLiftoff2.resource.getTexture("bettle");
+                textureRegions = TextureRegion.split(tex, 32, 32)[0];
+                setAnimation(textureRegions, 1 / 12f);
+                return;
+            case HIT:
+                tex = TurmoilLiftoff2.resource.getTexture("bettleRedHit");
+                textureRegions = TextureRegion.split(tex, 32, 32)[0];
+                setAnimation(textureRegions, 1 / 24f);
+        }
     }
 }

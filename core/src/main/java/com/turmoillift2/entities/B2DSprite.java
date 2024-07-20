@@ -37,7 +37,7 @@ public abstract class B2DSprite {
         int flipFactor = flip ? -1 : 1;
         sb.begin();
 
-        sb.draw(animation.getCurrentFrame(), body.getPosition().x * PPM - width * flipFactor  / 2, body.getPosition().y * PPM - height / 2 + 1,flipFactor * width , height);
+        sb.draw(animation.getCurrentFrame(), body.getPosition().x * PPM - width * flipFactor / 2, body.getPosition().y * PPM - height / 2 + 1, flipFactor * width, height);
 
         sb.end();
     }
@@ -64,6 +64,10 @@ public abstract class B2DSprite {
 
     public float getHeight() {
         return height;
+    }
+
+    protected void setStateAnimation() {
+
     }
 
     public abstract void regulateTime(float dt);

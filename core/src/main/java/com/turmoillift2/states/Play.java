@@ -2,8 +2,6 @@ package com.turmoillift2.states;
 
 
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.maps.MapLayer;
-import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.Array;
@@ -33,7 +31,7 @@ public class Play extends GameState {
 
     private EnemySpawner enemySpawner;
 
-    private int[] firstLayers = {0,1};
+    private int[] firstLayers = {0, 1};
     private int[] lastLayers = {2};
 
 
@@ -46,7 +44,7 @@ public class Play extends GameState {
 
         // create player
         createPlayer();
-        enemySpawner = new EnemySpawner(game.map,enemies,world);
+        enemySpawner = new EnemySpawner(game.map, enemies, world);
 
         b2DCam = new OrthographicCamera();
         b2DCam.setToOrtho(false, (float) TurmoilLiftoff2.WORLD_WIDTH / PPM, (float) TurmoilLiftoff2.WORLD_HEIGHT / PPM);
@@ -71,7 +69,7 @@ public class Play extends GameState {
             player.lookRight();
         }
         if (MyInput.isPressed(MyInput.ATTACK_BUTTON)) {
-            if (player.getState() == PlayerState.ATTACKING) return; // comment for infinite fire rate
+            if (player.getState() != PlayerState.IDLE) return; // comment for infinite fire rate
             player.attack();
             Projectile projectile = new Projectile(player.getBody());
             projectile.setOrientation(player.getOrientation());
@@ -84,8 +82,7 @@ public class Play extends GameState {
     public void update(float dt) {
         handleInput();
         world.step(dt, 6, 3);
-        player.update(dt);
-        enemySpawner.update(dt);
+        handlePlayer(dt);
         handleEnemies(dt);
 
         for (Projectile projectile : activeProjectiles) {
@@ -119,7 +116,7 @@ public class Play extends GameState {
         player.render(spriteBatch);
 
         //render enemies
-        for(Enemy enemy : enemies) {
+        for (Enemy enemy : enemies) {
             enemy.render(spriteBatch);
         }
 
@@ -163,6 +160,7 @@ public class Play extends GameState {
     }
 
     private void handleEnemies(float dt) {
+        enemySpawner.update(dt);
         for (Enemy enemy : enemies) {
             if (!enemy.isAlive()) {
                 killedEnemies.add(enemy);
@@ -173,6 +171,14 @@ public class Play extends GameState {
             enemy.update(dt);
         }
         enemies.removeAll(killedEnemies, true);
+    }
+
+    private void handlePlayer(float dt) {
+        if (player.playerFinished()) {
+            gsm.setState(GameStateType.INIT);
+            return;
+        }
+        player.update(dt);
     }
 
 }
