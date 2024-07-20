@@ -62,7 +62,7 @@ public class TurmoilLiftoff2 extends Game {
         tmr = new OrthogonalTiledMapRenderer(map);
         resource = new Content();
         resource.loadTexture("animations/character.png", "character");
-        resource.loadTexture("animations/characterAttack.png", "characterAttack");
+        resource.loadTexture("animations/characterFireAttack.png", "characterFireAttack");
         resource.loadTexture("animations/bullet.png", "bullet");
         resource.loadTexture("animations/bettle.png", "bettle");
         resource.loadTexture("animations/bettleRedHit.png", "bettleRedHit");

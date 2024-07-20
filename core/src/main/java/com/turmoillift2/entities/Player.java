@@ -44,6 +44,7 @@ public class Player extends B2DSprite {
         if (!canMove) return;
 
         float moveUnits = body.getPosition().y + 64f / PPM;
+
         if (moveUnits * PPM >= TurmoilLiftoff2.WORLD_HEIGHT) {
             return;
         }
@@ -89,7 +90,7 @@ public class Player extends B2DSprite {
                 setAnimation(textureRegions, 1 / 4f);
                 return;
             case ATTACKING:
-                tex = TurmoilLiftoff2.resource.getTexture("characterAttack");
+                tex = TurmoilLiftoff2.resource.getTexture("characterFireAttack");
                 textureRegions = TextureRegion.split(tex, 32, 32)[0];
                 setAnimation(textureRegions, fireDelay);
                 return;
