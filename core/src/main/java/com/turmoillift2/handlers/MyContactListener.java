@@ -1,5 +1,6 @@
 package com.turmoillift2.handlers;
 
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.Array;
 import com.turmoillift2.entities.Enemy;
@@ -57,7 +58,6 @@ public class MyContactListener implements ContactListener {
         if (fb.getUserData() instanceof Enemy && fa.getUserData() instanceof Player) {
             ((Enemy) fb.getUserData()).kill();
             ((Player) fa.getUserData()).hit();
-
         }
     }
 }
