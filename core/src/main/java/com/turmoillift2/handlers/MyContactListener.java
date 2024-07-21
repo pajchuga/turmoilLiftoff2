@@ -1,12 +1,9 @@
 package com.turmoillift2.handlers;
 
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
-import com.badlogic.gdx.utils.Array;
-import com.turmoillift2.entities.Enemy;
+import com.turmoillift2.entities.enemies.Enemy;
 import com.turmoillift2.entities.Player;
 import com.turmoillift2.entities.Projectile;
-import com.turmoillift2.states.Play;
 
 public class MyContactListener implements ContactListener {
 

@@ -4,8 +4,11 @@ import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.Array;
-import com.turmoillift2.entities.Enemy;
+import com.turmoillift2.entities.enemies.Enemy;
 import com.turmoillift2.entities.EntityOrientation;
+import com.turmoillift2.entities.enemies.EnemyDino;
+import com.turmoillift2.entities.enemies.EnemyTypes;
+import com.turmoillift2.entities.enemies.EnemyVulture;
 
 import java.util.HashSet;
 import java.util.Random;
@@ -27,6 +30,7 @@ public class EnemySpawner {
     private float spawnDelay = 0.3f;
     private float timer = 1f;
     private String location = "";
+
 
 
     public EnemySpawner(TiledMap map, Array<Enemy> enemies, World world) {
@@ -100,12 +104,37 @@ public class EnemySpawner {
         fdef.filter.categoryBits = ENEMY_BIT;
         //filters with what enemies detect collision (with both player and projectile bits
         fdef.filter.maskBits = PROJECTILE_BIT | PLAYER_BIT;
-
-        Enemy enemy = new Enemy(body, toRemove);
+        Enemy enemy = null;
+        switch (getRandType()) {
+            case BEETLE:
+                enemy = new Enemy(body, toRemove);
+                break;
+            case VULTURE:
+                enemy = new EnemyVulture(body, toRemove);
+                break;
+            case DINO:
+                enemy = new EnemyDino(body, toRemove);
+                break;
+        }
         enemy.setOrientation(orientation);
         enemy.setMoveForce(orientation);
         body.createFixture(fdef).setUserData(enemy);
         return enemy;
+    }
+
+    private EnemyTypes getRandType() {
+        Random r = new Random();
+        int randomType = r.nextInt(100);
+
+        if (randomType < 50){ // 50%
+            return EnemyTypes.BEETLE;
+        }
+        else if (randomType < 85){ // 35%
+            return EnemyTypes.VULTURE;
+        }
+        else { // 15%
+            return EnemyTypes.DINO;
+        }
     }
 
 }

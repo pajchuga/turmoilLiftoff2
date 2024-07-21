@@ -6,7 +6,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ScreenUtils;
-import com.turmoillift2.entities.Enemy;
+import com.turmoillift2.entities.enemies.Enemy;
 import com.turmoillift2.entities.Player;
 import com.turmoillift2.entities.PlayerState;
 import com.turmoillift2.entities.Projectile;
@@ -68,7 +68,7 @@ public class Play extends GameState {
         if (MyInput.isPressed(MyInput.RIGHT_BUTTON)) {
             player.lookRight();
         }
-        if (MyInput.isPressed(MyInput.ATTACK_BUTTON)) {
+        if (MyInput.isDown(MyInput.ATTACK_BUTTON)) {
             if (player.getState() != PlayerState.IDLE) return; // comment for infinite fire rate
             player.attack();
             Projectile projectile = new Projectile(player.getBody());
