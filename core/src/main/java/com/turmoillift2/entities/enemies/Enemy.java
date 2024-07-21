@@ -1,9 +1,11 @@
-package com.turmoillift2.entities;
+package com.turmoillift2.entities.enemies;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
+import com.turmoillift2.entities.B2DSprite;
+import com.turmoillift2.entities.EntityOrientation;
 import com.turmoillift2.main.TurmoilLiftoff2;
 
 import static com.turmoillift2.handlers.B2DVars.PPM;
@@ -20,7 +22,7 @@ public class Enemy extends B2DSprite {
         this.lives = 2;
         body.setGravityScale(0);
         setStateAnimation();
-        moveForce = 1.5f;
+        moveForce = 1.8f;
     }
 
     public Enemy(Body body, int row) {

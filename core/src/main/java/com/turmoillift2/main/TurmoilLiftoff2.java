@@ -10,6 +10,7 @@ import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.turmoillift2.handlers.Content;
 import com.turmoillift2.handlers.GameStateManager;
 import com.turmoillift2.handlers.MyInput;
@@ -24,7 +25,7 @@ public class TurmoilLiftoff2 extends Game {
     public static final String TITLE = "WIZARDS TURMOIL";
     public static final int WORLD_WIDTH = 640;
     public static final int WORLD_HEIGHT = 480;
-    public static final float SCALE = 1.5f;
+    public static final float SCALE = 1.25f;
 
     // game engine (60fps) update time
     public static final float TICK = 1 / 144f;
@@ -69,6 +70,10 @@ public class TurmoilLiftoff2 extends Game {
         resource.loadTexture("animations/bluebettle.png", "bluebettle");
         resource.loadTexture("animations/characterHit.png", "characterHit");
         resource.loadTexture("animations/characterDead.png", "characterDead");
+        resource.loadTexture("animations/vultureIdle.png", "vultureIdle");
+        resource.loadTexture("animations/vultureAttacking.png", "vultureAttacking");
+        resource.loadTexture("animations/dinoAttacking.png", "dinoAttacking");
+        resource.loadTexture("animations/dinoHit.png", "dinoHit");
     }
 
     @Override
