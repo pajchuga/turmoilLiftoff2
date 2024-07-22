@@ -1,5 +1,6 @@
 package com.turmoillift2.states;
 
+import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.turmoillift2.handlers.GameStateManager;
@@ -14,6 +15,7 @@ public abstract class GameState {
 //    protected OrthographicCamera hudCamera;
 
     public GameState(GameStateManager gsm) {
+        super();
         this.gsm = gsm;
         game = gsm.getGame();
         this.spriteBatch = game.getSpriteBatch();
@@ -24,5 +26,6 @@ public abstract class GameState {
     public abstract void update(float dt);
     public abstract void render();
     public abstract void dispose();
+
 
 }

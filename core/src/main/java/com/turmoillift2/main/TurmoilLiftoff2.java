@@ -2,6 +2,7 @@ package com.turmoillift2.main;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -10,7 +11,6 @@ import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.utils.viewport.FitViewport;
-import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.turmoillift2.handlers.Content;
 import com.turmoillift2.handlers.GameStateManager;
 import com.turmoillift2.handlers.MyInput;
@@ -38,7 +38,6 @@ public class TurmoilLiftoff2 extends Game {
 
     //TODO RefactorToPrivate
     public BitmapFont font;
-    public Texture background;
     public TiledMap map;
     public OrthogonalTiledMapRenderer tmr;
     //private OrthographicCamera hudCamera;
@@ -46,19 +45,20 @@ public class TurmoilLiftoff2 extends Game {
     //handlers
     private GameStateManager gsm;
     public static Content resource;
+    private InputMultiplexer inputMultiplexer;
 
 
     @Override
     public void create() {
-        Gdx.input.setInputProcessor(new MyInputProcessor());
-
+        this.inputMultiplexer = new InputMultiplexer();
+        inputMultiplexer.addProcessor(new MyInputProcessor());
+        Gdx.input.setInputProcessor(inputMultiplexer);
         spriteBatch = new SpriteBatch();
         camera = new OrthographicCamera();
         camera.setToOrtho(false, WORLD_WIDTH, WORLD_HEIGHT);
         viewport = new FitViewport(WORLD_WIDTH, WORLD_HEIGHT, camera);
         gsm = new GameStateManager(this);
         font = new BitmapFont();
-        background = new Texture(Gdx.files.internal("ui/background.png"));
         map = new TmxMapLoader().load("map/tiles.tmx");
         tmr = new OrthogonalTiledMapRenderer(map);
         resource = new Content();
@@ -105,7 +105,6 @@ public class TurmoilLiftoff2 extends Game {
     @Override
     public void dispose() {
         font.dispose();
-        background.dispose();
     }
 
     // Getters
@@ -116,5 +115,13 @@ public class TurmoilLiftoff2 extends Game {
 
     public OrthographicCamera getCamera() {
         return camera;
+    }
+
+    public FitViewport getViewport() {
+        return viewport;
+    }
+
+    public InputMultiplexer getInputMultiplexer() {
+        return inputMultiplexer;
     }
 }

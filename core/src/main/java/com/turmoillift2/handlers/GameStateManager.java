@@ -1,5 +1,6 @@
 package com.turmoillift2.handlers;
 
+import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.turmoillift2.main.TurmoilLiftoff2;
 import com.turmoillift2.states.*;
 
