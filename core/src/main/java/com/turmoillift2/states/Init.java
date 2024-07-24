@@ -18,7 +18,7 @@ public class Init extends GameState {
 
     public Init(GameStateManager gsm) {
         super(gsm);
-        skin = new Skin(Gdx.files.internal("ui/uiskin.json"));
+        skin = new Skin(Gdx.files.internal("ui/test/uiskin.json"));
 
 
         stage = new Stage(game.getViewport());
@@ -28,31 +28,30 @@ public class Init extends GameState {
         root.setSkin(skin);
         root.setFillParent(true);
         skin.get(Label.LabelStyle.class).font.getData().markupEnabled = true;
-        Label label = new Label("* * * " + TurmoilLiftoff2.TITLE + " * * *", skin);
+        Label label = new Label("[YELLOW] * * * []" + TurmoilLiftoff2.TITLE + "[YELLOW] * * * []", skin);
         Label instructionLabel1 = new Label("Press [YELLOW]R[] or click on [YELLOW][Start][]", skin);
         Label instructionLabel2 = new Label("[YELLOW] TO START THE GAME[]", skin);
 
         stage.addActor(root);
-        TextButton textButton = new TextButton("Start", skin);
+        ImageTextButton textButton = new ImageTextButton("Start", skin);
         textButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 gsm.setState(GameStateType.PLAY);
             }
         });
-        root.background("window");
-        root.add(label).colspan(6);
+        root.padTop(50);
+        root.align(Align.top);
+        root.add(label).expandX();
+        root.row().spaceTop(200);
+        root.add(textButton);
+        root.row().spaceTop(60);
+        root.add(instructionLabel1);
+        root.row().spaceTop(10);
+        root.add(instructionLabel2);
         root.row();
-        Window window = new Window("", skin);
-        root.add(window).expand().growX();
-        window.row();
-        window.add(textButton).padTop(20);
-        window.row();
-        window.add(instructionLabel1).padTop(50);
-        window.row();
-        window.add(instructionLabel2);
+        root.add(new Label("created by [YELLOW]Pavle[]", skin)).align(Align.bottomRight).padRight(20);
         root.row();
-        root.add(new Label("created by [YELLOW]Pavle[]", skin)).align(Align.right);
 
 
     }
@@ -71,7 +70,7 @@ public class Init extends GameState {
 
     @Override
     public void render() {
-        ScreenUtils.clear(0.26f, 0.26f, 0.90f, 1);
+        ScreenUtils.clear(0.56f, 0.56f, 0.30f, 1);
         stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 144f));
         stage.draw();
     }
