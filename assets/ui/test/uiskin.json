@@ -1,0 +1,229 @@
+{
+BitmapFont: {
+	font: {
+		file: font-export.fnt
+		scaledSize: -1
+		markupEnabled: false
+		flip: false
+	}
+	title: {
+		file: font-title-export.fnt
+		scaledSize: -1
+		markupEnabled: false
+		flip: false
+	}
+}
+Color: {
+	black: {
+		hex: 000000ff
+	}
+	clear: {
+		hex: ffffff00
+	}
+	color-picker-bg: {
+		hex: 000000ba
+	}
+	gray: {
+		hex: 7f7f7fff
+	}
+	light-gray: {
+		hex: dbdbdbff
+	}
+	link: {
+		hex: 87fff9ff
+	}
+	red: {
+		hex: ff0000ff
+	}
+	white: {
+		hex: ffffffff
+	}
+}
+TintedDrawable: {
+	black: {
+		name: white
+		color: black
+	}
+	gray: {
+		name: white
+		color: gray
+	}
+	test: {
+		name: textfield-pressed
+		color: red
+	}
+	color-picker-bg: {
+		name: white
+		color: color-picker-bg
+	}
+	clear: {
+		name: white
+		color: clear
+	}
+	link-underline: {
+		name: white
+		color: link
+	}
+	button-pressed1: {
+		name: button
+		color: light-gray
+	}
+}
+
+ButtonStyle: {
+	default: {
+		up: button
+		down: button-pressed
+	}
+}
+CheckBoxStyle: {
+	default: {
+		checkboxOn: checkbox-checked
+		checkboxOff: checkbox
+		font: font
+	}
+	radio: {
+		checkboxOn: radio-checked
+		checkboxOff: radio
+		font: font
+	}
+}
+ImageButtonStyle: {
+	default: {
+		up: button
+		down: button-pressed
+	}
+}
+ImageTextButtonStyle: {
+	default: {
+		imageUp: idle0
+		imageDown: tile009
+		font: font
+		fontColor: red
+		up: button
+		down: button-pressed1
+		pressedOffsetY: -1.5
+	}
+}
+LabelStyle: {
+	default: {
+		font: font
+	}
+	menuitem-shortcut: {
+		font: font
+	}
+	small: {
+		font: font
+	}
+	title: {
+		font: title
+	}
+}
+ListStyle: {
+	default: {
+		font: font
+		fontColorSelected: white
+		fontColorUnselected: light-gray
+		selection: selection
+	}
+}
+ProgressBarStyle: {
+	default-horizontal: {
+		background: progress-bar-horizontal
+		knobBefore: progress-bar-knob-horizontal
+	}
+	default-vertical: {
+		background: progress-bar-vertical
+		knobBefore: progress-bar-knob-vertical
+	}
+}
+ScrollPaneStyle: {
+	default: {
+		hScrollKnob: scrollbar-horizontal
+		vScrollKnob: scrollbar-vertical
+	}
+	list: {
+		hScrollKnob: scrollbar-horizontal
+		vScrollKnob: scrollbar-vertical
+	}
+	select-box: {
+		background: list
+		hScrollKnob: scrollbar-horizontal
+		vScrollKnob: scrollbar-vertical
+	}
+}
+SelectBoxStyle: {
+	default: {
+		font: font
+		fontColor: white
+		background: select-box
+		scrollStyle: select-box
+		listStyle: default
+		backgroundOpen: select-box-pressed
+	}
+}
+SliderStyle: {
+	default-horizontal: {
+		knobDown: slider-knob-pressed-horizontal
+		background: progress-bar-horizontal
+		knob: slider-knob-horizontal
+		knobBefore: progress-bar-knob-horizontal
+	}
+	default-vertical: {
+		knobDown: slider-knob-pressed-vertical
+		background: progress-bar-vertical
+		knob: slider-knob-vertical
+		knobBefore: progress-bar-knob-vertical
+	}
+}
+SplitPaneStyle: {
+	default-horizontal: {
+		handle: splitpane-horizontal
+	}
+	default-vertical: {
+		handle: splitpane-vertical
+	}
+}
+TextButtonStyle: {
+	default: {
+		font: font
+		up: button
+		down: button-pressed
+	}
+}
+TextFieldStyle: {
+	default: {
+		font: font
+		fontColor: white
+		focusedFontColor: black
+		background: textfield
+		focusedBackground: textfield-pressed
+		cursor: black
+		selection: gray
+	}
+}
+TextTooltipStyle: {
+	default: {
+		label: default
+		background: button
+	}
+}
+TouchpadStyle: {
+	default: {
+		background: touchpad
+		knob: touchpad-knob
+	}
+}
+TreeStyle: {
+	default: {
+		plus: tree-plus
+		minus: tree-minus
+	}
+}
+WindowStyle: {
+	default: {
+		background: window
+		titleFont: font
+	}
+}
+}
