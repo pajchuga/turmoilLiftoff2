@@ -4,16 +4,18 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.turmoillift2.entities.EntityOrientation;
+import com.turmoillift2.handlers.B2DVars;
 import com.turmoillift2.main.TurmoilLiftoff2;
 
 public class EnemyDino extends Enemy{
-    protected float pushBackImpulse = 1.5f;
+    protected float pushBackImpulse;
 
     public EnemyDino(Body body) {
         super(body);
         pushBackImpulse = 1.5f;
         moveForce = 0.5f;
         lives = 5;
+        this.pointValue = 250;
     }
 
     public EnemyDino(Body body, int row) {
@@ -21,13 +23,20 @@ public class EnemyDino extends Enemy{
         pushBackImpulse = 1.5f;
         moveForce = 0.8f;
         lives = 5;
+        this.pointValue = 250;
     }
 
     @Override
     public void hit() {
+        float impulse = orientation == EntityOrientation.RIGHT ? -pushBackImpulse : pushBackImpulse;
+        if (impulse < 0) {
+            impulse = body.getPosition().x * B2DVars.PPM > TurmoilLiftoff2.WORLD_WIDTH/2f ? -impulse : impulse;
+        } else {
+            impulse = body.getPosition().x * B2DVars.PPM < TurmoilLiftoff2.WORLD_WIDTH/2f ? -impulse : impulse;
+        }
         state = EnemyState.HIT;
         setStateAnimation();
-        body.applyLinearImpulse(orientation == EntityOrientation.RIGHT ? -pushBackImpulse : pushBackImpulse, 0, body.getPosition().x, body.getPosition().y, true);
+        body.applyLinearImpulse(impulse, 0, body.getPosition().x, body.getPosition().y, true);
         if (--lives == 0) {
             kill();
         }

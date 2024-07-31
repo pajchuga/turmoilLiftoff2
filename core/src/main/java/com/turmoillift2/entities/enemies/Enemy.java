@@ -16,10 +16,12 @@ public class Enemy extends B2DSprite {
     protected int row;
     protected int lives;
     protected EnemyState state = EnemyState.ATTACKING;
+    protected int pointValue;
 
     public Enemy(Body body) {
         super(body);
         this.lives = 2;
+        this.pointValue = 50;
         body.setGravityScale(0);
         setStateAnimation();
         moveForce = 1.8f;
@@ -62,6 +64,7 @@ public class Enemy extends B2DSprite {
     }
 
     public void kill() {
+        pointValue = 0;
         isAlive = false;
     }
 
@@ -69,11 +72,15 @@ public class Enemy extends B2DSprite {
         return isAlive;
     }
 
+    public int getPointValue() {
+        return pointValue;
+    }
+
     public void hit() {
         state = EnemyState.HIT;
         setStateAnimation();
         if (--lives == 0) {
-            kill();
+           isAlive = false;
         }
     }
 

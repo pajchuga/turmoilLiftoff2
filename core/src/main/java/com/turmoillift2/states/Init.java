@@ -3,14 +3,18 @@ package com.turmoillift2.states;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.*;
+import com.badlogic.gdx.scenes.scene2d.ui.ImageTextButton;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.ScreenUtils;
+import com.github.tommyettinger.textra.Font;
+import com.github.tommyettinger.textra.TypingLabel;
 import com.turmoillift2.handlers.GameStateManager;
 import com.turmoillift2.handlers.MyInput;
 import com.turmoillift2.main.TurmoilLiftoff2;
-
 
 public class Init extends GameState {
     private Skin skin;
@@ -20,7 +24,6 @@ public class Init extends GameState {
         super(gsm);
         skin = new Skin(Gdx.files.internal("ui/test/uiskin.json"));
 
-
         stage = new Stage(game.getViewport());
         //Gdx.input.setInputProcessor(stage);
         game.getInputMultiplexer().addProcessor(stage);
@@ -28,6 +31,7 @@ public class Init extends GameState {
         root.setSkin(skin);
         root.setFillParent(true);
         skin.get(Label.LabelStyle.class).font.getData().markupEnabled = true;
+        TypingLabel typingLabel = new TypingLabel("[@IBM 8x16][%150][CHARTREUSE]{EASE=10.0;4.0;false}Wizards Turmoil",new Font());
         Label label = new Label("[YELLOW] * * * []" + TurmoilLiftoff2.TITLE + "[YELLOW] * * * []", skin);
         Label instructionLabel1 = new Label("Press [YELLOW]R[] or click on [YELLOW][Start][]", skin);
         Label instructionLabel2 = new Label("[YELLOW] TO START THE GAME[]", skin);
@@ -42,7 +46,7 @@ public class Init extends GameState {
         });
         root.padTop(50);
         root.align(Align.top);
-        root.add(label).expandX();
+        root.add(typingLabel).expand();
         root.row().spaceTop(200);
         root.add(textButton);
         root.row().spaceTop(60);

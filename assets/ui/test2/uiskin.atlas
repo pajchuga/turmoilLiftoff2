@@ -1,0 +1,64 @@
+
+uiskin.png
+size: 512, 512
+format: RGBA8888
+filter: Linear, Linear
+repeat: none
+ThaleahFat
+  rotate: false
+  xy: 1, 481
+  size: 505, 23
+  orig: 505, 23
+  offset: 0, 0
+  index: -1
+UI_Flat_Banner_01_Downward
+  rotate: false
+  xy: 1, 447
+  size: 96, 32
+  orig: 96, 32
+  offset: 0, 0
+  index: -1
+tenPatch
+  rotate: false
+  xy: 1, 447
+  size: 96, 32
+  split: 18, 18, 8, 13
+  pad: 0, 0, 7, 8
+  orig: 96, 32
+  offset: 0, 0
+  index: -1
+UI_Flat_Button_Medium_Lock_02a4
+  rotate: false
+  xy: 99, 447
+  size: 64, 32
+  orig: 64, 32
+  offset: 0, 0
+  index: -1
+UI_Flat_Button_Medium_Press_02a1
+  rotate: false
+  xy: 1, 413
+  size: 64, 32
+  orig: 64, 32
+  offset: 0, 0
+  index: -1
+UI_Flat_Select_02a2
+  rotate: false
+  xy: 1, 379
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+idle0
+  rotate: false
+  xy: 67, 413
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+tile009
+  rotate: false
+  xy: 165, 447
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
