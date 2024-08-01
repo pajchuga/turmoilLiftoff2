@@ -1,6 +1,8 @@
 package com.turmoillift2.states;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageTextButton;
@@ -10,7 +12,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.ScreenUtils;
-import com.github.tommyettinger.textra.Font;
 import com.github.tommyettinger.textra.KnownFonts;
 import com.github.tommyettinger.textra.TypingLabel;
 import com.turmoillift2.handlers.GameStateManager;
@@ -18,12 +19,20 @@ import com.turmoillift2.handlers.MyInput;
 import com.turmoillift2.main.TurmoilLiftoff2;
 
 public class Init extends GameState {
-    private Skin skin;
-    private Stage stage;
+    private final Skin skin;
+    private final Stage stage;
+    private final Sprite background;
+    private final Texture backgroundTexture;
 
     public Init(GameStateManager gsm) {
         super(gsm);
         skin = new Skin(Gdx.files.internal("ui/test/uiskin.json"));
+        backgroundTexture = new Texture(Gdx.files.internal("background.png"));
+        backgroundTexture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
+        background = new Sprite(backgroundTexture);
+        background.setSize(TurmoilLiftoff2.WORLD_WIDTH, TurmoilLiftoff2.WORLD_HEIGHT);
+
+       // background = new Sprite(backgroundTexture);
 
         stage = new Stage(game.getViewport());
         //Gdx.input.setInputProcessor(stage);
@@ -56,8 +65,6 @@ public class Init extends GameState {
         root.row();
         root.add(new TypingLabel("created by {JOLT=1.0;1.0;inf;0.2;#f1dd38;ffff88ff}[#f1dd38]Pavle[]", KnownFonts.getIBM8x16())).align(Align.bottomRight).padRight(20).padBottom(20);
         root.row();
-
-
     }
 
     @Override
@@ -75,6 +82,10 @@ public class Init extends GameState {
     @Override
     public void render() {
         ScreenUtils.clear(0.29f, 0.46f, 0.72f, 1);
+        spriteBatch.setProjectionMatrix(camera.combined);
+        spriteBatch.begin();
+        background.draw(spriteBatch);
+        spriteBatch.end();
         stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 144f));
         stage.draw();
     }
@@ -83,5 +94,6 @@ public class Init extends GameState {
     public void dispose() {
         stage.dispose();
         skin.dispose();
+        backgroundTexture.dispose();
     }
 }
