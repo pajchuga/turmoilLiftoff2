@@ -64,9 +64,11 @@ public class Player extends B2DSprite {
         canMove = false;
     }
 
-    public void attack() {
+    public boolean attack() {
+        if (state != PlayerState.IDLE) return false;
         state = PlayerState.ATTACKING;
         setStateAnimation();
+        return true;
     }
 
     public void hit() {

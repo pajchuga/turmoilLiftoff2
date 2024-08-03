@@ -1,0 +1,90 @@
+{
+BitmapFont: {
+	ThaleahFat: {
+		file: ThaleahFat.fnt
+		scaledSize: -1
+		markupEnabled: true
+		flip: false
+	}
+}
+Color: {
+	DarkRed: {
+		hex: a80000ff
+	}
+	DisabledOker: {
+		hex: cbd43c5f
+	}
+	LightBlue: {
+		hex: 8fe1f8ff
+	}
+	Oker: {
+		hex: f2d55fff
+	}
+	Red: {
+		hex: f63131ff
+	}
+}
+TintedDrawable: {
+	idledisable: {
+		name: idle0
+		color: {
+			hex: c3434371
+		}
+	}
+	ButtonUpDisabled: {
+		name: ButtonUp.9
+		color: DisabledOker
+	}
+}
+ButtonStyle: {
+	default: {
+		up: ButtonUp.9
+		down: ButtonPressed
+		over: ButtonOver
+		disabled: ButtonUpDisabled
+	}
+}
+ImageButtonStyle: {
+	default: {
+		parent: default
+		imageUp: idle0
+		imageDown: tile009
+		imageOver: idle0
+		imageDisabled: idledisable
+	}
+}
+ImageTextButtonStyle: {
+	default: {
+		parent: default
+		imageUp: idle0
+		imageDown: tile009
+		imageOver: idle0
+		imageDisabled: idledisable
+		font: ThaleahFat
+		unpressedOffsetY: 1
+	}
+}
+LabelStyle: {
+	default: {
+		font: ThaleahFat
+		fontColor: Oker
+	}
+}
+TextButtonStyle: {
+	default: {
+		parent: default
+		font: ThaleahFat
+		disabledFontColor: DarkRed
+	}
+}
+TextTooltipStyle: {
+	default: {
+		label: default
+	}
+}
+WindowStyle: {
+	default: {
+		titleFont: ThaleahFat
+	}
+}
+}

@@ -16,6 +16,7 @@ public class EnemyVulture extends Enemy{
         state = EnemyState.IDLE;
         moveForce = 0f;
         lives = 1;
+        this.pointValue = 100;
         setStateAnimation();
     }
 
@@ -24,6 +25,7 @@ public class EnemyVulture extends Enemy{
         state = EnemyState.IDLE;
         moveForce = 0f;
         lives = 1;
+        this.pointValue = 100;
         setStateAnimation();
     }
 

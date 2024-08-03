@@ -4,7 +4,6 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.maps.tiled.TiledMap;
@@ -40,6 +39,7 @@ public class TurmoilLiftoff2 extends Game {
     public BitmapFont font;
     public TiledMap map;
     public OrthogonalTiledMapRenderer tmr;
+
     //private OrthographicCamera hudCamera;
 
     //handlers
@@ -58,6 +58,17 @@ public class TurmoilLiftoff2 extends Game {
         camera.setToOrtho(false, WORLD_WIDTH, WORLD_HEIGHT);
         viewport = new FitViewport(WORLD_WIDTH, WORLD_HEIGHT, camera);
         gsm = new GameStateManager(this);
+        /* TODO Might want to try and make this work with gwt
+        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("font/ThaleahFat.ttf"));
+        FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
+        parameter.size = 20;
+        parameter.borderWidth = 2;
+        parameter.shadowOffsetX = 2;
+        parameter.shadowOffsetY = 3;
+        font = generator.generateFont(parameter);
+        generator.dispose();
+         */
+
         font = new BitmapFont();
         map = new TmxMapLoader().load("map/tiles.tmx");
         tmr = new OrthogonalTiledMapRenderer(map);
@@ -105,6 +116,7 @@ public class TurmoilLiftoff2 extends Game {
     @Override
     public void dispose() {
         font.dispose();
+
     }
 
     // Getters

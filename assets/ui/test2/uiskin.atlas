@@ -1,0 +1,52 @@
+
+uiskin.png
+size: 512, 512
+format: RGBA8888
+filter: Linear, Linear
+repeat: none
+ButtonOver
+  rotate: false
+  xy: 123, 437
+  size: 120, 42
+  split: 14, 15, 8, 10
+  orig: 120, 42
+  offset: 0, 0
+  index: -1
+ButtonPressed
+  rotate: false
+  xy: 1, 437
+  size: 120, 42
+  split: 14, 15, 8, 10
+  pad: 0, 0, 0, 0
+  orig: 120, 42
+  offset: 0, 0
+  index: -1
+ButtonUp.9
+  rotate: false
+  xy: 1, 393
+  size: 120, 42
+  split: 14, 15, 8, 10
+  orig: 120, 42
+  offset: 0, 0
+  index: -1
+ThaleahFat
+  rotate: false
+  xy: 1, 481
+  size: 505, 23
+  orig: 505, 23
+  offset: 0, 0
+  index: -1
+idle0
+  rotate: false
+  xy: 1, 359
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+tile009
+  rotate: false
+  xy: 123, 403
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
