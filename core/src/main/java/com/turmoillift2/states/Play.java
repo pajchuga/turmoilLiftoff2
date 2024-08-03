@@ -67,7 +67,7 @@ public class Play extends GameState {
         skin = new Skin(Gdx.files.internal("ui/test2/uiskin.json"));
         stage = new Stage(game.getViewport());
         scoreLabel = new TypingLabel("{FADE=f1b209ff;add8e6;1.0}{SQUASH=4.0;true}{SLOWER}SCORE: ", KnownFonts.getIBM8x16());
-        pointLabel = new TypingLabel("{WAIT=1}{FADE=f1b209ff;add8e6;1.0}{SQUASH=4.0;true}{SLOWER}"+ score.getPoints(), KnownFonts.getIBM8x16());
+        pointLabel = new TypingLabel("{WAIT=1}{FADE=f1b209ff;add8e6;1.0}{SQUASH=5.0;true}{SLOWER}"+ score.getPoints(), KnownFonts.getIBM8x16());
         game.getInputMultiplexer().addProcessor(stage);
         stage.addActor(scoreLabel);
         game.getInputMultiplexer().addProcessor(stage);
@@ -76,9 +76,9 @@ public class Play extends GameState {
         root.setFillParent(true);
         skin.get(Label.LabelStyle.class).font.getData().markupEnabled = true;
         stage.addActor(root);
-        root.align(Align.top);
-        root.add(scoreLabel).align(Align.right);
-        root.add(pointLabel).align(Align.right);
+        root.right().top().padTop(10);
+        root.add(scoreLabel).align(Align.right).minWidth(40);
+        root.add(pointLabel).align(Align.right).minWidth(120);
     }
 
     @Override
@@ -200,7 +200,7 @@ public class Play extends GameState {
                 if (points != 0) {
                     score.addPoints(enemy.getPointValue());
                     //TODO  SKIP TO END SCORE PART and use it as normal label maybe
-                    pointLabel.restart("{FADE=f1b209ff;add8e6;0.5}{SQUASH=5.0;true}" + score.getPoints());
+                    pointLabel.restart("{FADE=F25121;add8e6;0.5}{SQUASH=5.0;true}" + score.getPoints());
                 }
                 continue;
             }

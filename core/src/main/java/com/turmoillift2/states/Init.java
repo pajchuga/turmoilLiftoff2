@@ -41,11 +41,11 @@ public class Init extends GameState {
         root.setSkin(skin);
         root.setFillParent(true);
         skin.get(Label.LabelStyle.class).font.getData().markupEnabled = true;
+        stage.addActor(root);
         TypingLabel typingLabel = new TypingLabel("[%200][#f1dd38]{ROTATE=10.0}{EASE=15 .0;3.0;false}{JOLT=1.0;1.0;inf;0.1;#f1dd38;ffff88ff}Wizards Turmoil", KnownFonts.getIBM8x16());
         TypingLabel instructionLabel1 = new TypingLabel("{FADE=f1b209ff;f1dd38;1.0}Press {JOLT=1.0;1.0;inf;0.45;#f1dd38;ffff88ff}R{ENDJOLT} or click on [#f1dd38]{JOLT=1.0;1.0;inf;0.3;#f1dd38;ffff88ff} START", KnownFonts.getIBM8x16());
         TypingLabel instructionLabel2 = new TypingLabel("{FADE=f1b209ff;ffff88ff;1.0}[#ffff88ff] TO START THE GAME[]", KnownFonts.getIBM8x16());
         TypingLabel signature = new TypingLabel("created by {JOLT=1.0;1.0;inf;0.2;#f1dd38;ffff88ff}[#f1dd38]Pavle[]", KnownFonts.getIBM8x16());
-        stage.addActor(root);
         ImageTextButton textButton = new ImageTextButton("Start", skin);
         textButton.addListener(new ChangeListener() {
             @Override
@@ -55,16 +55,17 @@ public class Init extends GameState {
         });
         root.padTop(50);
         root.align(Align.top);
-        root.add(typingLabel).expand();
-        root.row().spaceTop(200);
-        root.add(textButton);
-        root.row().spaceTop(60);
+        root.add(typingLabel).expand().minWidth(250);
+        root.row().padTop(200);
+        root.add(textButton).minHeight(50);
+        root.row().padTop(60);
         root.add(instructionLabel1);
-        root.row().spaceTop(10);
+        root.row().padTop(10);
         root.add(instructionLabel2);
         root.row();
         root.add(signature).align(Align.bottomRight).padRight(20).padBottom(20);
         root.row();
+        //root.debug();
     }
 
     @Override
