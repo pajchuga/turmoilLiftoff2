@@ -8,50 +8,40 @@ BitmapFont: {
 	}
 }
 Color: {
-	RGBA_168_0_0_255: {
+	DarkRed: {
 		hex: a80000ff
 	}
-	RGBA_210_21_21_255: {
-		hex: f63131ff
+	DisabledOker: {
+		hex: cbd43c5f
 	}
-	RGBA_242_213_95_255: {
+	LightBlue: {
+		hex: 8fe1f8ff
+	}
+	Oker: {
 		hex: f2d55fff
+	}
+	Red: {
+		hex: f63131ff
 	}
 }
 TintedDrawable: {
-	UI_Flat_Button_Medium_Press_02a12: {
-		name: UI_Flat_Button_Medium_Press_02a1
-		color: RGBA_242_213_95_255
-	}
-	UI_Flat_Button_Medium_Lock_02a42: {
-		name: UI_Flat_Button_Medium_Lock_02a4
-		color: RGBA_242_213_95_255
-	}
-	UI_Flat_Button_Medium_Press_02a13: {
-		name: UI_Flat_Button_Medium_Press_02a1
-		color: {
-			hex: 9161615e
-		}
-	}
 	idledisable: {
 		name: idle0
 		color: {
 			hex: c3434371
 		}
 	}
+	ButtonUpDisabled: {
+		name: ButtonUp.9
+		color: DisabledOker
+	}
 }
 ButtonStyle: {
 	default: {
-		up: UI_Flat_Button_Medium_Press_02a1
-		down: UI_Flat_Button_Medium_Lock_02a4
-		over: UI_Flat_Button_Medium_Press_02a12
-		checked: UI_Flat_Button_Medium_Lock_02a4
-		checkedOver: UI_Flat_Button_Medium_Lock_02a42
-		disabled: UI_Flat_Button_Medium_Press_02a13
-		pressedOffsetX: 4
-		pressedOffsetY: 5
-		unpressedOffsetX: -3
-		unpressedOffsetY: -5
+		up: ButtonUp.9
+		down: ButtonPressed
+		over: ButtonOver
+		disabled: ButtonUpDisabled
 	}
 }
 ImageButtonStyle: {
@@ -60,8 +50,6 @@ ImageButtonStyle: {
 		imageUp: idle0
 		imageDown: tile009
 		imageOver: idle0
-		imageChecked: tile009
-		imageCheckedOver: tile009
 		imageDisabled: idledisable
 	}
 }
@@ -71,27 +59,22 @@ ImageTextButtonStyle: {
 		imageUp: idle0
 		imageDown: tile009
 		imageOver: idle0
-		imageChecked: tile009
-		imageCheckedOver: tile009
 		imageDisabled: idledisable
 		font: ThaleahFat
-		pressedOffsetX: -5
-		unpressedOffsetX: -4
 		unpressedOffsetY: 1
-		checkedOffsetX: -5
 	}
 }
 LabelStyle: {
 	default: {
 		font: ThaleahFat
-		fontColor: RGBA_210_21_21_255
+		fontColor: Oker
 	}
 }
 TextButtonStyle: {
 	default: {
 		parent: default
 		font: ThaleahFat
-		disabledFontColor: RGBA_168_0_0_255
+		disabledFontColor: DarkRed
 	}
 }
 TextTooltipStyle: {

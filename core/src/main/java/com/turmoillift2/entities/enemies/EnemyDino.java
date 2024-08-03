@@ -38,7 +38,7 @@ public class EnemyDino extends Enemy{
         setStateAnimation();
         body.applyLinearImpulse(impulse, 0, body.getPosition().x, body.getPosition().y, true);
         if (--lives == 0) {
-            kill();
+            isAlive = false;
         }
     }
 
