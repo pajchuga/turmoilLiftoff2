@@ -42,7 +42,7 @@ public class Init extends GameState {
         root.setSkin(skin);
         root.setFillParent(true);
         skin.get(Label.LabelStyle.class).font.getData().markupEnabled = true;
-        typingLabel = new TypingLabel("[@IBM 8x16][%200][#f1dd38]{ROTATE=10.0}{EASE=15 .0;3.0;false}{JOLT=1.0;1.0;inf;0.1;#f1dd38;ffff88ff}Wizards Turmoil", KnownFonts.getIBM8x16());
+        typingLabel = new TypingLabel("[%200][#f1dd38]{ROTATE=10.0}{EASE=15 .0;3.0;false}{JOLT=1.0;1.0;inf;0.1;#f1dd38;ffff88ff}Wizards Turmoil", KnownFonts.getIBM8x16());
         TypingLabel instructionLabel1 = new TypingLabel("{FADE=f1b209ff;f1dd38;1.0}Press {JOLT=1.0;1.0;inf;0.45;#f1dd38;ffff88ff}R{ENDJOLT} or click on [#f1dd38]{JOLT=1.0;1.0;inf;0.3;#f1dd38;ffff88ff} START", KnownFonts.getIBM8x16());
         TypingLabel instructionLabel2 = new TypingLabel("{FADE=f1b209ff;ffff88ff;1.0}[#ffff88ff] TO START THE GAME[]", KnownFonts.getIBM8x16());
 
