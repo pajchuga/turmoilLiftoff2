@@ -11,6 +11,6 @@ public class HealthBarEnemy extends HealthBar {
         super(body);
         Texture tex = TurmoilLiftoff2.resource.getTexture("healthbarEnemy");
         TextureRegion[] textureRegions = TextureRegion.split(tex, 8, 8)[0];
-        setAnimation(textureRegions, 1 / 8f);
+        setAnimation(textureRegions, 1 / 6f);
     }
 }

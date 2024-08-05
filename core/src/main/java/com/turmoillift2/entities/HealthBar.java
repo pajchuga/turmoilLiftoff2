@@ -3,6 +3,7 @@ package com.turmoillift2.entities;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.turmoillift2.main.TurmoilLiftoff2;
 
@@ -24,7 +25,7 @@ public class HealthBar extends B2DSprite {
         int offset = 0;
         int lives = killableEntity.getLives();
         if (lives > 4) {
-            offset = -Math.ceilDiv(lives - 4 , 2) * 8;
+            offset = -MathUtils.ceil((lives - 4) / 2f) * 8;
         } else if (lives < 2) {
             offset = 8;
         } else if (lives == 2) {
