@@ -6,17 +6,20 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.turmoillift2.entities.B2DSprite;
 import com.turmoillift2.entities.EntityOrientation;
+import com.turmoillift2.entities.HealthBar;
+import com.turmoillift2.entities.Killable;
 import com.turmoillift2.main.TurmoilLiftoff2;
 
 import static com.turmoillift2.handlers.B2DVars.PPM;
 
-public class Enemy extends B2DSprite {
+public class Enemy extends B2DSprite implements Killable {
     protected boolean isAlive = true;
     protected float moveForce;
     protected int row;
     protected int lives;
     protected EnemyState state = EnemyState.ATTACKING;
     protected int pointValue;
+    private HealthBarEnemy healthBar;
 
     public Enemy(Body body) {
         super(body);
@@ -25,6 +28,8 @@ public class Enemy extends B2DSprite {
         body.setGravityScale(0);
         setStateAnimation();
         moveForce = 1.8f;
+        healthBar = new HealthBarEnemy(this.getBody());
+        healthBar.setKillableEntity(this);
     }
 
     public Enemy(Body body, int row) {
@@ -105,5 +110,15 @@ public class Enemy extends B2DSprite {
                 textureRegions = TextureRegion.split(tex, 32, 32)[0];
                 setAnimation(textureRegions, 1 / 24f);
         }
+    }
+
+    @Override
+    public int getLives() {
+        return lives;
+    }
+
+    @Override
+    public HealthBar getHealthBar() {
+        return healthBar;
     }
 }
