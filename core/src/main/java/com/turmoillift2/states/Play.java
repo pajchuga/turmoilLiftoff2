@@ -56,7 +56,7 @@ public class Play extends GameState {
 
         // create player
         createPlayer();
-        enemySpawner = new EnemySpawner(game.map, enemies, world);
+        enemySpawner = new EnemySpawner(game.getMap(), enemies, world);
         score = new Score();
 
         b2DCam = new OrthographicCamera();
@@ -66,8 +66,8 @@ public class Play extends GameState {
         //TODO Refactor later, just testing right now
         skin = new Skin(Gdx.files.internal("ui/test2/uiskin.json"));
         stage = new Stage(game.getViewport());
-        scoreLabel = new TypingLabel("{FADE=f1b209ff;add8e6;1.0}{SQUASH=4.0;true}{SLOWER}SCORE: ", KnownFonts.getIBM8x16());
-        pointLabel = new TypingLabel("{WAIT=1}{FADE=f1b209ff;add8e6;1.0}{SQUASH=5.0;true}{SLOWER}"+ score.getPoints(), KnownFonts.getIBM8x16());
+        scoreLabel = new TypingLabel("[%125]{FADE=f1b209ff;add8e6;1.0}{SQUASH=4.0;true}{SLOWER}SCORE: ", KnownFonts.getIBM8x16());
+        pointLabel = new TypingLabel("[%125]{WAIT=0.75}{FADE=f1b209ff;add8e6;1.0}{SQUASH=5.0;true}{SLOWER}"+ score.getPoints(), KnownFonts.getIBM8x16());
         game.getInputMultiplexer().addProcessor(stage);
         stage.addActor(scoreLabel);
         game.getInputMultiplexer().addProcessor(stage);
@@ -76,7 +76,7 @@ public class Play extends GameState {
         root.setFillParent(true);
         skin.get(Label.LabelStyle.class).font.getData().markupEnabled = true;
         stage.addActor(root);
-        root.right().top().padTop(10);
+        root.right().top().padTop(8);
         root.add(scoreLabel).align(Align.right).minWidth(40);
         root.add(pointLabel).align(Align.right).minWidth(120);
     }
@@ -135,18 +135,20 @@ public class Play extends GameState {
         spriteBatch.begin();
 
         //render map/arena
-        game.tmr.setView(camera);
-        game.tmr.render(firstLayers);
+        game.getTmr().setView(camera);
+        game.getTmr().render(firstLayers);
 
         spriteBatch.end();
         // end batch draw
 
         //render player
         player.render(spriteBatch);
+        player.getHealthBar().render(spriteBatch);
 
         //render enemies
         for (Enemy enemy : enemies) {
             enemy.render(spriteBatch);
+            enemy.getHealthBar().render(spriteBatch);
         }
 
         //render projectiles
@@ -155,7 +157,7 @@ public class Play extends GameState {
         }
 
         // render assets for parallax effect
-        game.tmr.render(lastLayers);
+        game.getTmr().render(lastLayers);
         //render debug boxes
         b2drDebug.render(world, b2DCam.combined);
         stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 144f));
@@ -199,12 +201,12 @@ public class Play extends GameState {
                 int points = enemy.getPointValue();
                 if (points != 0) {
                     score.addPoints(enemy.getPointValue());
-                    //TODO  SKIP TO END SCORE PART and use it as normal label maybe
-                    pointLabel.restart("{FADE=F25121;add8e6;0.5}{SQUASH=5.0;true}" + score.getPoints());
+                    pointLabel.restart("[%125]{SLOWER}{FADE=738D68;add8e6;0.5}{SQUASH=1;true}" + score.getPoints()); // shrink, spin, squash for now
                 }
                 continue;
             }
             enemy.update(dt);
+            enemy.getHealthBar().update(dt);
         }
         enemies.removeAll(killedEnemies, true);
     }
@@ -215,6 +217,7 @@ public class Play extends GameState {
             return;
         }
         player.update(dt);
+        player.getHealthBar().update(dt);
     }
 
 }

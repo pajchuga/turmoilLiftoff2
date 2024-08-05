@@ -8,22 +8,27 @@ import com.turmoillift2.main.TurmoilLiftoff2;
 
 import static com.turmoillift2.handlers.B2DVars.PPM;
 
-public class Player extends B2DSprite {
+public class Player extends B2DSprite implements Killable{
     private float timerMove_t = 1 / 10f; // testing out different values
     private float timerMove = timerMove_t;
     private float fireDelay = 1 / 12f; // fire rate is dependent on animation
     private boolean canMove = true;
     private PlayerState state = PlayerState.IDLE;
 
+    private HealthBar healthBar;
+
     private int lives = 3;
 
     public Player(Body body) {
         super(body);
         setStateAnimation();
+        healthBar = new HealthBar(this.getBody());
+        healthBar.setKillableEntity(this);
     }
 
     @Override
     public void regulateTime(float dt) {
+//        healthBar.update(dt);
         if (state == PlayerState.DEAD) return;
         if (state == PlayerState.ATTACKING && animation.getTimesPlayed() > 0) {
             state = PlayerState.IDLE;
@@ -132,4 +137,11 @@ public class Player extends B2DSprite {
         return state == PlayerState.DEAD && animation.hasFinished();
     }
 
+    public HealthBar getHealthBar() {
+        return healthBar;
+    }
+
+    public int getLives() {
+        return lives;
+    }
 }

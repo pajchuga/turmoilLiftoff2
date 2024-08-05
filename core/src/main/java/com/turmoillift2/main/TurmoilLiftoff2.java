@@ -35,10 +35,8 @@ public class TurmoilLiftoff2 extends Game {
     private OrthographicCamera camera;
     private FitViewport viewport;
 
-    //TODO RefactorToPrivate
-    public BitmapFont font;
-    public TiledMap map;
-    public OrthogonalTiledMapRenderer tmr;
+    private TiledMap map;
+    private OrthogonalTiledMapRenderer tmr;
 
     //private OrthographicCamera hudCamera;
 
@@ -58,18 +56,7 @@ public class TurmoilLiftoff2 extends Game {
         camera.setToOrtho(false, WORLD_WIDTH, WORLD_HEIGHT);
         viewport = new FitViewport(WORLD_WIDTH, WORLD_HEIGHT, camera);
         gsm = new GameStateManager(this);
-        /* TODO Might want to try and make this work with gwt
-        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("font/ThaleahFat.ttf"));
-        FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
-        parameter.size = 20;
-        parameter.borderWidth = 2;
-        parameter.shadowOffsetX = 2;
-        parameter.shadowOffsetY = 3;
-        font = generator.generateFont(parameter);
-        generator.dispose();
-         */
 
-        font = new BitmapFont();
         map = new TmxMapLoader().load("map/tiles.tmx");
         tmr = new OrthogonalTiledMapRenderer(map);
         resource = new Content();
@@ -85,6 +72,8 @@ public class TurmoilLiftoff2 extends Game {
         resource.loadTexture("animations/vultureAttacking.png", "vultureAttacking");
         resource.loadTexture("animations/dinoAttacking.png", "dinoAttacking");
         resource.loadTexture("animations/dinoHit.png", "dinoHit");
+        resource.loadTexture("animations/healthbarAnimated.png", "healthbar");
+        resource.loadTexture("animations/healthbarAnimatedRed.png", "healthbarEnemy");
     }
 
     @Override
@@ -115,7 +104,6 @@ public class TurmoilLiftoff2 extends Game {
 
     @Override
     public void dispose() {
-        font.dispose();
 
     }
 
@@ -135,5 +123,13 @@ public class TurmoilLiftoff2 extends Game {
 
     public InputMultiplexer getInputMultiplexer() {
         return inputMultiplexer;
+    }
+
+    public TiledMap getMap() {
+        return map;
+    }
+
+    public OrthogonalTiledMapRenderer getTmr() {
+        return tmr;
     }
 }
