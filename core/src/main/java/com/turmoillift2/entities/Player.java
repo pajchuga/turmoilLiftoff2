@@ -3,12 +3,16 @@ package com.turmoillift2.entities;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.physics.box2d.Body;
-import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.utils.Array;
+import com.turmoillift2.entities.projectiles.*;
+import com.turmoillift2.entities.projectiles.Projectile;
+import com.turmoillift2.entities.projectiles.ProjectileFactory;
+import com.turmoillift2.entities.projectiles.ProjectileType;
 import com.turmoillift2.main.TurmoilLiftoff2;
 
 import static com.turmoillift2.handlers.B2DVars.PPM;
 
-public class Player extends B2DSprite implements Killable{
+public class Player extends B2DSprite implements Killable {
     private float timerMove_t = 1 / 10f; // testing out different values
     private float timerMove = timerMove_t;
     private float fireDelay = 1 / 12f; // fire rate is dependent on animation
@@ -18,21 +22,32 @@ public class Player extends B2DSprite implements Killable{
     private HealthBar healthBar;
 
     private int lives = 3;
+    private Array<Projectile> activeProjectiles;
+    private final ProjectileFactory projectileFactory;
+
 
     public Player(Body body) {
         super(body);
         setStateAnimation();
         healthBar = new HealthBar(this.getBody());
         healthBar.setKillableEntity(this);
+        projectileFactory = new BasicProjectileFactory();
     }
 
     @Override
     public void regulateTime(float dt) {
 //        healthBar.update(dt);
         if (state == PlayerState.DEAD) return;
+        if (state == PlayerState.ATTACKING && animation.getCurrentFrameInt() == animation.getTotalFramesInt() - 3) {
+            if (projectileFactory.isCreateEnabled()) {
+                activeProjectiles.add(projectileFactory.createProjectile(ProjectileType.BASIC, body, orientation));
+                projectileFactory.setCreateEnable(false);
+            }
+        }
         if (state == PlayerState.ATTACKING && animation.getTimesPlayed() > 0) {
             state = PlayerState.IDLE;
             setStateAnimation();
+            projectileFactory.setCreateEnable(true);
         }
         if (state == PlayerState.HIT && animation.getTimesPlayed() > 1) {
             state = PlayerState.IDLE;
@@ -143,5 +158,9 @@ public class Player extends B2DSprite implements Killable{
 
     public int getLives() {
         return lives;
+    }
+
+    public void setActiveProjectiles(Array<Projectile> activeProjectiles) {
+        this.activeProjectiles = activeProjectiles;
     }
 }

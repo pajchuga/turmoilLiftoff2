@@ -15,9 +15,13 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import com.github.tommyettinger.textra.KnownFonts;
 import com.github.tommyettinger.textra.TypingLabel;
 import com.turmoillift2.entities.Player;
-import com.turmoillift2.entities.Projectile;
 import com.turmoillift2.entities.enemies.Enemy;
-import com.turmoillift2.handlers.*;
+import com.turmoillift2.entities.enemies.EnemySpawner;
+import com.turmoillift2.entities.projectiles.Projectile;
+import com.turmoillift2.handlers.GameStateManager;
+import com.turmoillift2.handlers.MyContactListener;
+import com.turmoillift2.handlers.MyInput;
+import com.turmoillift2.handlers.Score;
 import com.turmoillift2.main.TurmoilLiftoff2;
 
 import static com.turmoillift2.handlers.B2DVars.*;
@@ -67,7 +71,7 @@ public class Play extends GameState {
         skin = new Skin(Gdx.files.internal("ui/test2/uiskin.json"));
         stage = new Stage(game.getViewport());
         scoreLabel = new TypingLabel("[%125]{FADE=f1b209ff;add8e6;1.0}{SQUASH=4.0;true}{SLOWER}SCORE: ", KnownFonts.getIBM8x16());
-        pointLabel = new TypingLabel("[%125]{WAIT=0.75}{FADE=f1b209ff;add8e6;1.0}{SQUASH=5.0;true}{SLOWER}"+ score.getPoints(), KnownFonts.getIBM8x16());
+        pointLabel = new TypingLabel("[%125]{WAIT=0.75}{FADE=f1b209ff;add8e6;1.0}{SQUASH=5.0;true}{SLOWER}" + score.getPoints(), KnownFonts.getIBM8x16());
         game.getInputMultiplexer().addProcessor(stage);
         stage.addActor(scoreLabel);
         game.getInputMultiplexer().addProcessor(stage);
@@ -99,13 +103,7 @@ public class Play extends GameState {
             player.lookRight();
         }
         if (MyInput.isDown(MyInput.ATTACK_BUTTON)) {
-//            if (player.getState() != PlayerState.IDLE) return; // comment for infinite fire rate
-            if (player.attack()) {
-                Projectile projectile = new Projectile(player.getBody());
-                projectile.setOrientation(player.getOrientation());
-                projectile.setBody();
-                activeProjectiles.add(projectile);
-            };
+            player.attack();
         }
     }
 
@@ -159,7 +157,7 @@ public class Play extends GameState {
         // render assets for parallax effect
         game.getTmr().render(lastLayers);
         //render debug boxes
-//        b2drDebug.render(world, b2DCam.combined);
+        b2drDebug.render(world, b2DCam.combined);
         stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 144f));
         stage.draw();
     }
@@ -189,6 +187,7 @@ public class Play extends GameState {
         player = new Player(body);
 
         body.createFixture(fdef).setUserData(player);
+        player.setActiveProjectiles(this.activeProjectiles);
     }
 
     private void handleEnemies(float dt) {
