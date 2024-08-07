@@ -17,7 +17,7 @@ public class EnemyFrog extends Enemy{
     public EnemyFrog(Body body, int row) {
         super(body, row);
         lives = 1;
-        moveForce = 0.75f;
+        moveForce = 0.65f;
         pointValue = 1;
     }
 
@@ -29,13 +29,13 @@ public class EnemyFrog extends Enemy{
             case ATTACKING:
                 tex = TurmoilLiftoff2.resource.getTexture("frogMove");
                 textureRegions = TextureRegion.split(tex, 32, 32)[0];
-                setAnimation(textureRegions, 1 / 16f);
+                setAnimation(textureRegions, 1 / 18f);
                 return;
             case HIT:
                 //TODO add death animation of enemies and maybe frog then remove them.
                 tex = TurmoilLiftoff2.resource.getTexture("frogMove");
                 textureRegions = TextureRegion.split(tex, 32, 32)[0];
-                setAnimation(textureRegions, 1 / 16f);
+                setAnimation(textureRegions, 1 / 18f);
         }
     }
 

@@ -17,6 +17,7 @@ import static com.turmoillift2.handlers.B2DVars.*;
 public class Projectile extends B2DSprite {
     private boolean hit = false;
     protected ProjectileType projectileType = ProjectileType.BASIC;
+    private float projectileSpeed = 3.5f;
 
     public Projectile(Body body) {
         super(body);
@@ -48,7 +49,7 @@ public class Projectile extends B2DSprite {
         // if body is looking left flip asset
         boolean flip = (orientation == EntityOrientation.LEFT);
         int flipFactor = flip ? -1 : 1; // if projectile is looking left flip it to other side
-        Vector2 force = new Vector2(2.8f * flipFactor, 0); // speed of projectile 2.8f
+        Vector2 force = new Vector2(projectileSpeed * flipFactor, 0); // speed of projectile 2.8f
         // define body of projectile
         BodyDef bodyDef = new BodyDef();
         bodyDef.position.set(this.body.getPosition().x + flipFactor * 5f / PPM, this.body.getPosition().y);
@@ -56,7 +57,7 @@ public class Projectile extends B2DSprite {
         Body body = this.getBody().getWorld().createBody(bodyDef);
 
         PolygonShape shape = new PolygonShape();
-        shape.setAsBox((float) 14 / PPM, (float) 8 / PPM); // size of projectile physics body
+        shape.setAsBox((float) 12 / PPM, (float) 8 / PPM); // size of projectile physics body
 
         // define fixture definition (what type and with what colides, and it is sensor only (might change this not to be sensor for more interaction))
         FixtureDef fdef = new FixtureDef();

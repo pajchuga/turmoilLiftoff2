@@ -98,6 +98,12 @@ public class EnemySpawner {
         fdef.filter.categoryBits = ENEMY_BIT;
         //filters with what enemies detect collision (with both player and projectile bits
         fdef.filter.maskBits = PROJECTILE_BIT | PLAYER_BIT;
+        Enemy enemy = getEnemy(toRemove, body, orientation);
+        body.createFixture(fdef).setUserData(enemy);
+        return enemy;
+    }
+
+    private Enemy getEnemy(int toRemove, Body body, EntityOrientation orientation) {
         Enemy enemy = null;
         switch (getRandType()) {
             case BEETLE:
@@ -115,7 +121,6 @@ public class EnemySpawner {
         }
         enemy.setOrientation(orientation);
         enemy.setMoveForce(orientation);
-        body.createFixture(fdef).setUserData(enemy);
         return enemy;
     }
 
