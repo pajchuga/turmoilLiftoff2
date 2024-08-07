@@ -1,14 +1,10 @@
-package com.turmoillift2.handlers;
+package com.turmoillift2.entities.enemies;
 
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.Array;
-import com.turmoillift2.entities.enemies.Enemy;
 import com.turmoillift2.entities.EntityOrientation;
-import com.turmoillift2.entities.enemies.EnemyDino;
-import com.turmoillift2.entities.enemies.EnemyTypes;
-import com.turmoillift2.entities.enemies.EnemyVulture;
 
 import java.util.HashSet;
 import java.util.Random;
@@ -30,8 +26,6 @@ public class EnemySpawner {
     private float spawnDelay = 0.3f;
     private float timer = 1f;
     private String location = "";
-
-
 
     public EnemySpawner(TiledMap map, Array<Enemy> enemies, World world) {
         this.map = map;

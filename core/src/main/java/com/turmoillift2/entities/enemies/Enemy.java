@@ -85,7 +85,7 @@ public class Enemy extends B2DSprite implements Killable {
         state = EnemyState.HIT;
         setStateAnimation();
         if (--lives == 0) {
-           isAlive = false;
+            isAlive = false;
         }
     }
 

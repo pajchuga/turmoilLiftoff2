@@ -3,7 +3,7 @@ package com.turmoillift2.handlers;
 import com.badlogic.gdx.physics.box2d.*;
 import com.turmoillift2.entities.enemies.Enemy;
 import com.turmoillift2.entities.Player;
-import com.turmoillift2.entities.Projectile;
+import com.turmoillift2.entities.projectiles.Projectile;
 
 public class MyContactListener implements ContactListener {
 

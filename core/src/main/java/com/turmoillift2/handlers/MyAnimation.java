@@ -53,8 +53,17 @@ public class MyAnimation {
         return frames[currentFrame];
     }
 
+
     public int getTimesPlayed() {
         return timesPlayed;
+    }
+
+    public int getTotalFramesInt() {
+        return frames.length;
+    }
+
+    public int getCurrentFrameInt() {
+        return currentFrame;
     }
 
     public boolean hasFinished() {

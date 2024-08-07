@@ -1,24 +1,28 @@
-package com.turmoillift2.entities;
+package com.turmoillift2.entities.projectiles;
 
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
+import com.turmoillift2.entities.B2DSprite;
+import com.turmoillift2.entities.EntityOrientation;
 import com.turmoillift2.main.TurmoilLiftoff2;
 
 import static com.turmoillift2.handlers.B2DVars.*;
 
 public class Projectile extends B2DSprite {
     private boolean hit = false;
+    protected ProjectileType projectileType = ProjectileType.BASIC;
 
     public Projectile(Body body) {
         super(body);
         Texture tex = TurmoilLiftoff2.resource.getTexture("bullet");
         TextureRegion[] textureRegions = TextureRegion.split(tex, 32, 32)[0];
-        setAnimation(textureRegions, 1/6f);
+        setAnimation(textureRegions, 1 / 6f);
     }
 
     @Override
@@ -29,6 +33,17 @@ public class Projectile extends B2DSprite {
         }
     }
 
+    @Override
+    public void render(SpriteBatch sb) {
+        boolean flip = (orientation == EntityOrientation.LEFT);
+        int flipFactor = flip ? -1 : 1;
+        sb.begin();
+
+        sb.draw(animation.getCurrentFrame(), body.getPosition().x * PPM - width * flipFactor / 2, body.getPosition().y * PPM - height / 2 + 1, flipFactor * width - flipFactor * 5, height - 5);
+
+        sb.end();
+    }
+
     public void setBody() {
         // if body is looking left flip asset
         boolean flip = (orientation == EntityOrientation.LEFT);
@@ -36,12 +51,12 @@ public class Projectile extends B2DSprite {
         Vector2 force = new Vector2(2.8f * flipFactor, 0); // speed of projectile 2.8f
         // define body of projectile
         BodyDef bodyDef = new BodyDef();
-        bodyDef.position.set(this.body.getPosition().x + flipFactor * 5f / PPM , this.body.getPosition().y);
+        bodyDef.position.set(this.body.getPosition().x + flipFactor * 5f / PPM, this.body.getPosition().y);
         bodyDef.type = BodyDef.BodyType.DynamicBody;
         Body body = this.getBody().getWorld().createBody(bodyDef);
 
         PolygonShape shape = new PolygonShape();
-        shape.setAsBox((float) 14  / PPM, (float) 8 / PPM); // size of projectile physics body
+        shape.setAsBox((float) 14 / PPM, (float) 8 / PPM); // size of projectile physics body
 
         // define fixture definition (what type and with what colides, and it is sensor only (might change this not to be sensor for more interaction))
         FixtureDef fdef = new FixtureDef();
@@ -66,4 +81,7 @@ public class Projectile extends B2DSprite {
         hit = true;
     }
 
+    public ProjectileType getProjectileType() {
+        return projectileType;
+    }
 }
