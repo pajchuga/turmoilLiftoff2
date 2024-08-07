@@ -74,6 +74,7 @@ public class TurmoilLiftoff2 extends Game {
         resource.loadTexture("animations/dinoHit.png", "dinoHit");
         resource.loadTexture("animations/healthbarAnimated.png", "healthbar");
         resource.loadTexture("animations/healthbarAnimatedRed.png", "healthbarEnemy");
+        resource.loadTexture("animations/FrogMove.png", "frogMove");
     }
 
     @Override

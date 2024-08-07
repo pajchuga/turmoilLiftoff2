@@ -34,7 +34,7 @@ public class EnemySpawner {
     }
 
     public void update(float dt) {
-        if(availableRows.isEmpty()) return;
+        if (availableRows.isEmpty()) return;
         Enemy spawnedEnemy = spawn(dt);
         if (spawnedEnemy == null) return;
         enemies.add(spawnedEnemy);
@@ -65,7 +65,7 @@ public class EnemySpawner {
     }
 
     private Enemy createEnemy(double randSide, int toRemove) {
-        location ="" + toRemove;
+        location = "" + toRemove;
         EntityOrientation orientation;
         float xPosition;
         float yPosition;
@@ -109,6 +109,9 @@ public class EnemySpawner {
             case DINO:
                 enemy = new EnemyDino(body, toRemove);
                 break;
+            case FROG:
+                enemy = new EnemyFrog(body, toRemove);
+                break;
         }
         enemy.setOrientation(orientation);
         enemy.setMoveForce(orientation);
@@ -120,13 +123,13 @@ public class EnemySpawner {
         Random r = new Random();
         int randomType = r.nextInt(100);
 
-        if (randomType < 50){ // 50%
+        if (randomType < 50) { // 50%
             return EnemyTypes.BEETLE;
-        }
-        else if (randomType < 85){ // 35%
+        } else if (randomType < 85) { // 35%
             return EnemyTypes.VULTURE;
-        }
-        else { // 15%
+        } else if (randomType < 90) { // 5%
+            return EnemyTypes.FROG;
+        } else { // 10%
             return EnemyTypes.DINO;
         }
     }
