@@ -12,7 +12,6 @@ import static com.turmoillift2.handlers.B2DVars.PPM;
 public class HealthBar extends B2DSprite {
     private Killable killableEntity;
 
-
     public HealthBar(Body body) {
         super(body);
         Texture tex = TurmoilLiftoff2.resource.getTexture("healthbar");
@@ -35,12 +34,12 @@ public class HealthBar extends B2DSprite {
         for (int i = 0; i < lives; i ++) {
             sb.draw(animation.getCurrentFrame(), body.getPosition().x  * PPM - width - 4  +  i*8 + offset , body.getPosition().y * PPM - height / 2 + 20, width + 4, height + 4);
         }
+
         sb.end();
     }
 
     @Override
     public void regulateTime(float dt) {
-
     }
 
     public void setKillableEntity(Killable killableEntity) {

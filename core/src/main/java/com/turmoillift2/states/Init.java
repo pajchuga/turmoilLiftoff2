@@ -10,11 +10,13 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.github.tommyettinger.textra.KnownFonts;
 import com.github.tommyettinger.textra.TypingLabel;
 import com.turmoillift2.handlers.GameStateManager;
+import com.turmoillift2.handlers.HoverEvent;
 import com.turmoillift2.handlers.MyInput;
 import com.turmoillift2.main.TurmoilLiftoff2;
 
@@ -53,6 +55,7 @@ public class Init extends GameState {
                 gsm.setState(GameStateType.PLAY);
             }
         });
+        textButton.addListener(new HoverEvent(typingLabel));
         root.padTop(50);
         root.align(Align.top);
         root.add(typingLabel).expand().minWidth(250);
@@ -65,7 +68,7 @@ public class Init extends GameState {
         root.row();
         root.add(signature).align(Align.bottomRight).padRight(20).padBottom(20);
         root.row();
-        //root.debug();
+//        root.debug();
     }
 
     @Override
