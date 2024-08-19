@@ -121,4 +121,8 @@ public class Enemy extends B2DSprite implements Killable {
     public HealthBar getHealthBar() {
         return healthBar;
     }
+
+    public EnemyTypes getType() {
+        return EnemyTypes.BEETLE;
+    }
 }

@@ -163,4 +163,10 @@ public class Player extends B2DSprite implements Killable {
     public void setActiveProjectiles(Array<Projectile> activeProjectiles) {
         this.activeProjectiles = activeProjectiles;
     }
+
+    public void kill() {
+        this.lives = 0;
+        state = PlayerState.DEAD;
+        setStateAnimation();
+    }
 }

@@ -157,7 +157,7 @@ public class Play extends GameState {
         // render assets for parallax effect
         game.getTmr().render(lastLayers);
         //render debug boxes
-        b2drDebug.render(world, b2DCam.combined);
+//        b2drDebug.render(world, b2DCam.combined);
         stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 144f));
         stage.draw();
     }
