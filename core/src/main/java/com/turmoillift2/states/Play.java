@@ -2,6 +2,7 @@ package com.turmoillift2.states;
 
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
@@ -36,6 +37,7 @@ public class Play extends GameState {
     private final Array<Projectile> inactiveProjectiles = new Array<>();
     private final Array<Enemy> enemies = new Array<>();
     private final Array<Enemy> killedEnemies = new Array<>();
+    private Sound enemyHit;
 
     private final EnemySpawner enemySpawner;
     private final Score score;
@@ -83,6 +85,9 @@ public class Play extends GameState {
         root.right().top().padTop(8);
         root.add(scoreLabel).align(Align.right).minWidth(40);
         root.add(pointLabel).align(Align.right).minWidth(120);
+
+        // Sounds
+
     }
 
     @Override
@@ -164,6 +169,8 @@ public class Play extends GameState {
 
     @Override
     public void dispose() {
+        //TODO Manage disposal for now everything loads at the start and stays there it should
+        // most stuff should load on creating this state and stay only while this state is active
     }
 
     public World getWorld() {

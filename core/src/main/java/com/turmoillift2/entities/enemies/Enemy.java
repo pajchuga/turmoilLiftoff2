@@ -1,5 +1,6 @@
 package com.turmoillift2.entities.enemies;
 
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
@@ -20,6 +21,7 @@ public class Enemy extends B2DSprite implements Killable {
     protected EnemyState state = EnemyState.ATTACKING;
     protected int pointValue;
     private HealthBarEnemy healthBar;
+    protected Sound enemyHit;
 
     public Enemy(Body body) {
         super(body);
@@ -30,6 +32,7 @@ public class Enemy extends B2DSprite implements Killable {
         moveForce = 1.8f;
         healthBar = new HealthBarEnemy(this.getBody());
         healthBar.setKillableEntity(this);
+        enemyHit = TurmoilLiftoff2.resource.getSound("enemyHit");
     }
 
     public Enemy(Body body, int row) {
@@ -87,6 +90,7 @@ public class Enemy extends B2DSprite implements Killable {
         if (--lives == 0) {
             isAlive = false;
         }
+        enemyHit.play(0.7f);
     }
 
     public void setMoveForce(EntityOrientation orientation) {

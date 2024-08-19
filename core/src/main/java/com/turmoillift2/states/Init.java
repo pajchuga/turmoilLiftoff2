@@ -1,6 +1,7 @@
 package com.turmoillift2.states;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -15,6 +16,7 @@ import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.github.tommyettinger.textra.KnownFonts;
 import com.github.tommyettinger.textra.TypingLabel;
+import com.turmoillift2.handlers.Content;
 import com.turmoillift2.handlers.GameStateManager;
 import com.turmoillift2.handlers.HoverEvent;
 import com.turmoillift2.handlers.MyInput;
@@ -25,6 +27,7 @@ public class Init extends GameState {
     private final Stage stage;
     private final Sprite background;
     private final Texture backgroundTexture;
+    private final Sound buttonHoverSound;
 
     public Init(GameStateManager gsm) {
         super(gsm);
@@ -33,6 +36,8 @@ public class Init extends GameState {
         backgroundTexture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
         background = new Sprite(backgroundTexture);
         background.setSize(TurmoilLiftoff2.WORLD_WIDTH, TurmoilLiftoff2.WORLD_HEIGHT);
+        buttonHoverSound = TurmoilLiftoff2.resource.getSound("buttonHover");
+        HoverEvent buttonHover = new HoverEvent(buttonHoverSound);
 
        // background = new Sprite(backgroundTexture);
 
@@ -55,7 +60,7 @@ public class Init extends GameState {
                 gsm.setState(GameStateType.PLAY);
             }
         });
-        textButton.addListener(new HoverEvent(typingLabel));
+        textButton.addListener(buttonHover);
         root.padTop(50);
         root.align(Align.top);
         root.add(typingLabel).expand().minWidth(250);
@@ -96,8 +101,7 @@ public class Init extends GameState {
 
     @Override
     public void dispose() {
-        stage.dispose();
-        skin.dispose();
-        backgroundTexture.dispose();
+        //TODO Manage disposal for now everything loads at the start and stays there it should
+        // most stuff should load on creating this state and stay only while this state is active
     }
 }

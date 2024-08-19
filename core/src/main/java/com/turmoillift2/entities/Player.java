@@ -1,5 +1,6 @@
 package com.turmoillift2.entities;
 
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.physics.box2d.Body;
@@ -20,6 +21,7 @@ public class Player extends B2DSprite implements Killable {
     private PlayerState state = PlayerState.IDLE;
 
     private HealthBar healthBar;
+    private Sound playerHit;
 
     private int lives = 3;
     private Array<Projectile> activeProjectiles;
@@ -32,6 +34,7 @@ public class Player extends B2DSprite implements Killable {
         healthBar = new HealthBar(this.getBody());
         healthBar.setKillableEntity(this);
         projectileFactory = new BasicProjectileFactory();
+        playerHit = TurmoilLiftoff2.resource.getSound("playerHit");
     }
 
     @Override
@@ -93,6 +96,7 @@ public class Player extends B2DSprite implements Killable {
 
     public void hit() {
         if (state == PlayerState.DEAD) return;
+        playerHit.play(0.7f);
         if (--lives <= 0) {
             canMove = false;
             state = PlayerState.DEAD;

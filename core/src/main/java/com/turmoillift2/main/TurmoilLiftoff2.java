@@ -47,6 +47,7 @@ public class TurmoilLiftoff2 extends Game {
 
     @Override
     public void create() {
+        resource = new Content();
         this.inputMultiplexer = new InputMultiplexer();
         inputMultiplexer.addProcessor(new MyInputProcessor());
         Gdx.input.setInputProcessor(inputMultiplexer);
@@ -58,7 +59,6 @@ public class TurmoilLiftoff2 extends Game {
 
         map = new TmxMapLoader().load("map/tiles.tmx");
         tmr = new OrthogonalTiledMapRenderer(map);
-        resource = new Content();
         resource.loadTexture("animations/character.png", "character");
         resource.loadTexture("animations/characterFireAttack.png", "characterFireAttack");
         resource.loadTexture("animations/fireballBullet.png", "bullet");
@@ -74,6 +74,9 @@ public class TurmoilLiftoff2 extends Game {
         resource.loadTexture("animations/healthbarAnimated.png", "healthbar");
         resource.loadTexture("animations/healthbarAnimatedRed.png", "healthbarEnemy");
         resource.loadTexture("animations/FrogMove.png", "frogMove");
+        resource.loadSound("sound/ButtonHover.mp3", "buttonHover");
+        resource.loadSound("sound/EnemyHit.mp3", "enemyHit");
+        resource.loadSound("sound/PlayerHit.mp3", "playerHit");
     }
 
     @Override
