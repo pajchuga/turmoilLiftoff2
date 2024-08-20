@@ -46,7 +46,7 @@ public class Player extends B2DSprite implements Killable {
         if (state == PlayerState.ATTACKING && animation.getCurrentFrameInt() == animation.getTotalFramesInt() - 3) {
             if (projectileFactory.isCreateEnabled()) {
                 activeProjectiles.add(projectileFactory.createProjectile(ProjectileType.BASIC, body, orientation));
-                playerFireSound.play(0.6f);
+                playerFireSound.play(0.4f);
                 projectileFactory.setCreateEnable(false);
             }
         }
