@@ -32,7 +32,7 @@ public class Enemy extends B2DSprite implements Killable {
         moveForce = 1.8f;
         healthBar = new HealthBarEnemy(this.getBody());
         healthBar.setKillableEntity(this);
-        enemyHit = TurmoilLiftoff2.resource.getSound("enemyHit");
+        enemyHit = TurmoilLiftoff2.resource.getSound("enemyHitSound");
     }
 
     public Enemy(Body body, int row) {

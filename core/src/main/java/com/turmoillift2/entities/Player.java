@@ -21,7 +21,8 @@ public class Player extends B2DSprite implements Killable {
     private PlayerState state = PlayerState.IDLE;
 
     private HealthBar healthBar;
-    private Sound playerHit;
+    private Sound playerHitSound;
+    private Sound playerFireSound;
 
     private int lives = 3;
     private Array<Projectile> activeProjectiles;
@@ -34,7 +35,8 @@ public class Player extends B2DSprite implements Killable {
         healthBar = new HealthBar(this.getBody());
         healthBar.setKillableEntity(this);
         projectileFactory = new BasicProjectileFactory();
-        playerHit = TurmoilLiftoff2.resource.getSound("playerHit");
+        playerHitSound = TurmoilLiftoff2.resource.getSound("playerHitSound");
+        playerFireSound = TurmoilLiftoff2.resource.getSound("playerFireSound");
     }
 
     @Override
@@ -44,6 +46,7 @@ public class Player extends B2DSprite implements Killable {
         if (state == PlayerState.ATTACKING && animation.getCurrentFrameInt() == animation.getTotalFramesInt() - 3) {
             if (projectileFactory.isCreateEnabled()) {
                 activeProjectiles.add(projectileFactory.createProjectile(ProjectileType.BASIC, body, orientation));
+                playerFireSound.play(0.6f);
                 projectileFactory.setCreateEnable(false);
             }
         }
@@ -96,7 +99,7 @@ public class Player extends B2DSprite implements Killable {
 
     public void hit() {
         if (state == PlayerState.DEAD) return;
-        playerHit.play(0.7f);
+        playerHitSound.play(0.7f);
         if (--lives <= 0) {
             canMove = false;
             state = PlayerState.DEAD;

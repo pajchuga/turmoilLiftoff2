@@ -37,7 +37,7 @@ public class Play extends GameState {
     private final Array<Projectile> inactiveProjectiles = new Array<>();
     private final Array<Enemy> enemies = new Array<>();
     private final Array<Enemy> killedEnemies = new Array<>();
-    private Sound enemyHit;
+    private final Sound battleTheme;
 
     private final EnemySpawner enemySpawner;
     private final Score score;
@@ -87,6 +87,8 @@ public class Play extends GameState {
         root.add(pointLabel).align(Align.right).minWidth(120);
 
         // Sounds
+        battleTheme = TurmoilLiftoff2.resource.getSound("battleThemeSound");
+        battleTheme.loop(0.15f);
 
     }
 
@@ -169,6 +171,7 @@ public class Play extends GameState {
 
     @Override
     public void dispose() {
+        battleTheme.stop();
         //TODO Manage disposal for now everything loads at the start and stays there it should
         // most stuff should load on creating this state and stay only while this state is active
     }

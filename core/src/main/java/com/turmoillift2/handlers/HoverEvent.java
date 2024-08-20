@@ -18,7 +18,7 @@ public class HoverEvent extends ClickListener {
     @Override
     public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
         if(fromActor == null && !restarted) {
-            TurmoilLiftoff2.resource.getSound("buttonHover").play(0.7f);
+            sound.play(0.7f);
             restarted = true;
         }
     }
