@@ -40,6 +40,7 @@ public class EnemyDino extends Enemy{
         if (--lives == 0) {
             isAlive = false;
         }
+        enemyHit.play(0.7f);
     }
 
     @Override

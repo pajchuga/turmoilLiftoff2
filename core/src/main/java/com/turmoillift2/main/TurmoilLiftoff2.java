@@ -47,17 +47,7 @@ public class TurmoilLiftoff2 extends Game {
 
     @Override
     public void create() {
-        this.inputMultiplexer = new InputMultiplexer();
-        inputMultiplexer.addProcessor(new MyInputProcessor());
-        Gdx.input.setInputProcessor(inputMultiplexer);
-        spriteBatch = new SpriteBatch();
-        camera = new OrthographicCamera();
-        camera.setToOrtho(false, WORLD_WIDTH, WORLD_HEIGHT);
-        viewport = new FitViewport(WORLD_WIDTH, WORLD_HEIGHT, camera);
-        gsm = new GameStateManager(this);
-
-        map = new TmxMapLoader().load("map/tiles.tmx");
-        tmr = new OrthogonalTiledMapRenderer(map);
+        //first load all resources
         resource = new Content();
         resource.loadTexture("animations/character.png", "character");
         resource.loadTexture("animations/characterFireAttack.png", "characterFireAttack");
@@ -74,6 +64,27 @@ public class TurmoilLiftoff2 extends Game {
         resource.loadTexture("animations/healthbarAnimated.png", "healthbar");
         resource.loadTexture("animations/healthbarAnimatedRed.png", "healthbarEnemy");
         resource.loadTexture("animations/FrogMove.png", "frogMove");
+        resource.loadSound("sound/ButtonHover.mp3", "buttonHoverSound");
+        resource.loadSound("sound/EnemyHit.mp3", "enemyHitSound");
+        resource.loadSound("sound/PlayerHit.mp3", "playerHitSound");
+        resource.loadSound("sound/TitleTheme.mp3", "titleThemeSound");
+        resource.loadSound("sound/BattleTheme.mp3", "battleThemeSound");
+        resource.loadSound("sound/PlayerFire.mp3", "playerFireSound");
+        resource.loadSound("sound/LoseGame.mp3", "playerDeadSound");
+
+        // other init
+        this.inputMultiplexer = new InputMultiplexer();
+        inputMultiplexer.addProcessor(new MyInputProcessor());
+        Gdx.input.setInputProcessor(inputMultiplexer);
+        spriteBatch = new SpriteBatch();
+        camera = new OrthographicCamera();
+        camera.setToOrtho(false, WORLD_WIDTH, WORLD_HEIGHT);
+        viewport = new FitViewport(WORLD_WIDTH, WORLD_HEIGHT, camera);
+        gsm = new GameStateManager(this);
+
+        map = new TmxMapLoader().load("map/tiles.tmx");
+        tmr = new OrthogonalTiledMapRenderer(map);
+
     }
 
     @Override

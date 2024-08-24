@@ -1,5 +1,6 @@
 package com.turmoillift2.entities;
 
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.physics.box2d.Body;
@@ -20,6 +21,10 @@ public class Player extends B2DSprite implements Killable {
     private PlayerState state = PlayerState.IDLE;
 
     private HealthBar healthBar;
+    private Sound playerHitSound;
+    private Sound playerFireSound;
+    private  Sound playerDeadSound;
+
 
     private int lives = 3;
     private Array<Projectile> activeProjectiles;
@@ -32,6 +37,10 @@ public class Player extends B2DSprite implements Killable {
         healthBar = new HealthBar(this.getBody());
         healthBar.setKillableEntity(this);
         projectileFactory = new BasicProjectileFactory();
+        playerHitSound = TurmoilLiftoff2.resource.getSound("playerHitSound");
+        playerFireSound = TurmoilLiftoff2.resource.getSound("playerFireSound");
+        playerDeadSound = TurmoilLiftoff2.resource.getSound("playerDeadSound");
+
     }
 
     @Override
@@ -41,6 +50,7 @@ public class Player extends B2DSprite implements Killable {
         if (state == PlayerState.ATTACKING && animation.getCurrentFrameInt() == animation.getTotalFramesInt() - 3) {
             if (projectileFactory.isCreateEnabled()) {
                 activeProjectiles.add(projectileFactory.createProjectile(ProjectileType.BASIC, body, orientation));
+                playerFireSound.play(0.4f);
                 projectileFactory.setCreateEnable(false);
             }
         }
@@ -80,7 +90,7 @@ public class Player extends B2DSprite implements Killable {
         if (moveUnits * PPM <= 0) {
             return;
         }
-        body.setTransform(body.getPosition().x, body.getPosition().y - 64f / PPM, 0);
+        body.setTransform(body.getPosition().x, moveUnits, 0);
         canMove = false;
     }
 
@@ -93,10 +103,12 @@ public class Player extends B2DSprite implements Killable {
 
     public void hit() {
         if (state == PlayerState.DEAD) return;
+        playerHitSound.play(0.7f);
         if (--lives <= 0) {
             canMove = false;
             state = PlayerState.DEAD;
             setStateAnimation();
+            playerDeadSound.play(0.7f);
             return;
         }
         state = PlayerState.HIT;

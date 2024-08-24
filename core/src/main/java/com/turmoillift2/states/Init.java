@@ -1,16 +1,14 @@
 package com.turmoillift2.states;
 
+import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.ImageTextButton;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
-import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.github.tommyettinger.textra.KnownFonts;
@@ -21,10 +19,20 @@ import com.turmoillift2.handlers.MyInput;
 import com.turmoillift2.main.TurmoilLiftoff2;
 
 public class Init extends GameState {
+    private static final String TITLE_EFFECT = "[%200][#f1dd38]{ROTATE=10.0}{EASE=15 .0;3.0;false}{JOLT=1.0;1.0;inf;0.1;#f1dd38;ffff88ff}";
+    private static final String INSTURCTION1_PART1_EFFECT = "{FADE=f1b209ff;f1dd38;1.0}";
+    private static final String INSTURCTION1_PART2_EFFECT = "{JOLT=1.0;1.0;inf;0.45;#f1dd38;ffff88ff}R{ENDJOLT}";
+    private static final String INSTURCTION1_PART3_EFFECT = "[#f1dd38]{JOLT=1.0;1.0;inf;0.3;#f1dd38;ffff88ff}";
+    private static final String INSTURCTION2_PART1_EFFECT = "{FADE=f1b209ff;ffff88ff;1.0}[#ffff88ff]";
+    private static final String SIGNATURE_EFFECT = "created by {JOLT=1.0;1.0;inf;0.2;#f1dd38;ffff88ff}[#f1dd38]Pavle[]";
+
     private final Skin skin;
     private final Stage stage;
     private final Sprite background;
     private final Texture backgroundTexture;
+    private final Sound buttonHoverSound;
+    private final Sound mainLobbyLoop;
+
 
     public Init(GameStateManager gsm) {
         super(gsm);
@@ -33,6 +41,9 @@ public class Init extends GameState {
         backgroundTexture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
         background = new Sprite(backgroundTexture);
         background.setSize(TurmoilLiftoff2.WORLD_WIDTH, TurmoilLiftoff2.WORLD_HEIGHT);
+        buttonHoverSound = TurmoilLiftoff2.resource.getSound("buttonHoverSound");
+        HoverEvent buttonHover = new HoverEvent(buttonHoverSound);
+        mainLobbyLoop = TurmoilLiftoff2.resource.getSound("titleThemeSound");
 
        // background = new Sprite(backgroundTexture);
 
@@ -44,23 +55,37 @@ public class Init extends GameState {
         root.setFillParent(true);
         skin.get(Label.LabelStyle.class).font.getData().markupEnabled = true;
         stage.addActor(root);
-        TypingLabel typingLabel = new TypingLabel("[%200][#f1dd38]{ROTATE=10.0}{EASE=15 .0;3.0;false}{JOLT=1.0;1.0;inf;0.1;#f1dd38;ffff88ff}Wizards Turmoil", KnownFonts.getIBM8x16());
-        TypingLabel instructionLabel1 = new TypingLabel("{FADE=f1b209ff;f1dd38;1.0}Press {JOLT=1.0;1.0;inf;0.45;#f1dd38;ffff88ff}R{ENDJOLT} or click on [#f1dd38]{JOLT=1.0;1.0;inf;0.3;#f1dd38;ffff88ff} START", KnownFonts.getIBM8x16());
-        TypingLabel instructionLabel2 = new TypingLabel("{FADE=f1b209ff;ffff88ff;1.0}[#ffff88ff] TO START THE GAME[]", KnownFonts.getIBM8x16());
-        TypingLabel signature = new TypingLabel("created by {JOLT=1.0;1.0;inf;0.2;#f1dd38;ffff88ff}[#f1dd38]Pavle[]", KnownFonts.getIBM8x16());
-        ImageTextButton textButton = new ImageTextButton("Start", skin);
-        textButton.addListener(new ChangeListener() {
+        TypingLabel typingLabel = new TypingLabel(TITLE_EFFECT + "Wizards Turmoil", KnownFonts.getIBM8x16());
+        TypingLabel instructionLabel1 = new TypingLabel(INSTURCTION1_PART1_EFFECT +"Press " + INSTURCTION1_PART2_EFFECT + " or click on "+ INSTURCTION1_PART3_EFFECT +" START", KnownFonts.getIBM8x16());
+        TypingLabel instructionLabel2 = new TypingLabel(INSTURCTION2_PART1_EFFECT  +" TO START THE GAME[]", KnownFonts.getIBM8x16());
+        TypingLabel signature = new TypingLabel(SIGNATURE_EFFECT, KnownFonts.getIBM8x16());
+        ImageTextButton startButton = new ImageTextButton("Start", skin);
+        startButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 gsm.setState(GameStateType.PLAY);
             }
         });
-        textButton.addListener(new HoverEvent(typingLabel));
+        TextButton exitButton = new TextButton("EXIT", skin);
+        exitButton.addListener(new ChangeListener() {
+
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                game.dispose();
+                Gdx.app.exit();
+            }
+        });
+        startButton.addListener(buttonHover);
+        exitButton.addListener(buttonHover);
         root.padTop(50);
         root.align(Align.top);
         root.add(typingLabel).expand().minWidth(250);
-        root.row().padTop(200);
-        root.add(textButton).minHeight(50);
+        root.row().padTop(160);
+        root.add(startButton).minHeight(50);
+        if (Gdx.app.getType() != Application.ApplicationType.WebGL) {
+            root.row().padTop(8);
+            root.add(exitButton).minHeight(50);
+        }
         root.row().padTop(60);
         root.add(instructionLabel1);
         root.row().padTop(10);
@@ -68,7 +93,9 @@ public class Init extends GameState {
         root.row();
         root.add(signature).align(Align.bottomRight).padRight(20).padBottom(20);
         root.row();
-//        root.debug();
+        root.debug();
+        mainLobbyLoop.loop(0.15f);
+
     }
 
     @Override
@@ -96,8 +123,8 @@ public class Init extends GameState {
 
     @Override
     public void dispose() {
-        stage.dispose();
-        skin.dispose();
-        backgroundTexture.dispose();
+        mainLobbyLoop.stop();
+        //TODO Manage disposal for now everything loads at the start and stays there it should
+        // most stuff should load on creating this state and stay only while this state is active
     }
 }
