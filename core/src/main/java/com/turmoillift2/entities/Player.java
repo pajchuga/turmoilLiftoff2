@@ -179,6 +179,7 @@ public class Player extends B2DSprite implements Killable {
     public void kill() {
         this.lives = 0;
         state = PlayerState.DEAD;
+        playerDeadSound.play(0.7f);
         setStateAnimation();
     }
 }
