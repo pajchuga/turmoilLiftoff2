@@ -16,6 +16,7 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import com.github.tommyettinger.textra.KnownFonts;
 import com.github.tommyettinger.textra.TypingLabel;
 import com.turmoillift2.entities.Player;
+import com.turmoillift2.entities.PlayerState;
 import com.turmoillift2.entities.enemies.Enemy;
 import com.turmoillift2.entities.enemies.EnemySpawner;
 import com.turmoillift2.entities.projectiles.Projectile;
@@ -28,6 +29,10 @@ import com.turmoillift2.main.TurmoilLiftoff2;
 import static com.turmoillift2.handlers.B2DVars.*;
 
 public class Play extends GameState {
+    private static final String POINTS_EFFECT = "[%125]{SLOWER}{FADE=738D68;add8e6;0.5}{SQUASH=1;true}";
+    private static final String LOAD_POINTS_EFFECT = "[%125]{WAIT=0.75}{FADE=f1b209ff;add8e6;1.0}{SQUASH=5.0;true}{SLOWER}";
+    private static final String LOAD_SCORE_EFFECT = "[%125]{FADE=f1b209ff;add8e6;1.0}{SQUASH=4.0;true}{SLOWER}";
+
     private final World world;
     private MyContactListener contactListener;
     private final Box2DDebugRenderer b2drDebug;
@@ -72,8 +77,8 @@ public class Play extends GameState {
         //TODO Refactor later, just testing right now
         skin = new Skin(Gdx.files.internal("ui/test2/uiskin.json"));
         stage = new Stage(game.getViewport());
-        scoreLabel = new TypingLabel("[%125]{FADE=f1b209ff;add8e6;1.0}{SQUASH=4.0;true}{SLOWER}SCORE: ", KnownFonts.getIBM8x16());
-        pointLabel = new TypingLabel("[%125]{WAIT=0.75}{FADE=f1b209ff;add8e6;1.0}{SQUASH=5.0;true}{SLOWER}" + score.getPoints(), KnownFonts.getIBM8x16());
+        scoreLabel = new TypingLabel(LOAD_SCORE_EFFECT+"SCORE: ", KnownFonts.getIBM8x16());
+        pointLabel = new TypingLabel(LOAD_POINTS_EFFECT + score.getPoints(), KnownFonts.getIBM8x16());
         game.getInputMultiplexer().addProcessor(stage);
         stage.addActor(scoreLabel);
         game.getInputMultiplexer().addProcessor(stage);
@@ -210,7 +215,7 @@ public class Play extends GameState {
                 int points = enemy.getPointValue();
                 if (points != 0) {
                     score.addPoints(enemy.getPointValue());
-                    pointLabel.restart("[%125]{SLOWER}{FADE=738D68;add8e6;0.5}{SQUASH=1;true}" + score.getPoints()); // shrink, spin, squash for now
+                    pointLabel.restart(POINTS_EFFECT + score.getPoints()); // shrink, spin, squash for now
                 }
                 continue;
             }

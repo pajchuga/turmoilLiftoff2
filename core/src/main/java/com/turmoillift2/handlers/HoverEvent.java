@@ -25,7 +25,7 @@ public class HoverEvent extends ClickListener {
 
     @Override
     public void exit(InputEvent event, float x, float y, int pointer, Actor toActor) {
-        if (toActor == null) {
+        if (toActor == null ) {
             restarted = false;
         }
     }

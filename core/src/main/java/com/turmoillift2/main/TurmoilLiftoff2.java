@@ -70,6 +70,7 @@ public class TurmoilLiftoff2 extends Game {
         resource.loadSound("sound/TitleTheme.mp3", "titleThemeSound");
         resource.loadSound("sound/BattleTheme.mp3", "battleThemeSound");
         resource.loadSound("sound/PlayerFire.mp3", "playerFireSound");
+        resource.loadSound("sound/LoseGame.mp3", "playerDeadSound");
 
         // other init
         this.inputMultiplexer = new InputMultiplexer();
