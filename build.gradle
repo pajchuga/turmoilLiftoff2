@@ -9,6 +9,7 @@ buildscript {
     maven { url 'https://s01.oss.sonatype.org/content/repositories/snapshots/' }
   }
   dependencies {
+    classpath "com.android.tools.build:gradle:8.1.4"
     classpath "org.docstr:gwt-gradle-plugin:$gwtPluginVersion"
 
   }
@@ -27,7 +28,7 @@ allprojects {
   }
 }
 
-configure(subprojects) {
+configure(subprojects - project(':android')) {
   apply plugin: 'java-library'
   sourceCompatibility = 18
   compileJava {
@@ -65,5 +66,6 @@ subprojects {
     maven { url 'https://jitpack.io' }
   }
 }
+
 
 eclipse.project.name = 'turmoil-liftoff2' + '-parent'
