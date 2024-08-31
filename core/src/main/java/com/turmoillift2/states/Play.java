@@ -1,17 +1,23 @@
 package com.turmoillift2.states;
 
 
+import static com.turmoillift2.handlers.B2DVars.ENEMY_BIT;
+import static com.turmoillift2.handlers.B2DVars.PLAYER_BIT;
+import static com.turmoillift2.handlers.B2DVars.PPM;
+
 import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.*;
-import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
+import com.badlogic.gdx.physics.box2d.FixtureDef;
+import com.badlogic.gdx.physics.box2d.PolygonShape;
+import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.ImageTextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
@@ -19,13 +25,11 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Array;
-import com.badlogic.gdx.utils.IntIntMap;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.github.tommyettinger.textra.KnownFonts;
 import com.github.tommyettinger.textra.TypingLabel;
 import com.turmoillift2.entities.Player;
-import com.turmoillift2.entities.PlayerState;
 import com.turmoillift2.entities.enemies.Enemy;
 import com.turmoillift2.entities.enemies.EnemySpawner;
 import com.turmoillift2.entities.projectiles.Projectile;
@@ -34,8 +38,6 @@ import com.turmoillift2.handlers.MyContactListener;
 import com.turmoillift2.handlers.MyInput;
 import com.turmoillift2.handlers.Score;
 import com.turmoillift2.main.TurmoilLiftoff2;
-
-import static com.turmoillift2.handlers.B2DVars.*;
 
 public class Play extends GameState {
     private static final String POINTS_EFFECT = "[%125]{SLOWER}{FADE=738D68;add8e6;0.5}{SQUASH=1;true}";
@@ -61,7 +63,7 @@ public class Play extends GameState {
     private final Skin skin;
     private final TypingLabel scoreLabel;
     private final TypingLabel pointLabel;
-    private  Stage stageAndroidOverlay;
+    private Stage stageAndroidOverlay;
 
     private final int[] firstLayers = {0, 1};
     private final int[] lastLayers = {2};
@@ -91,7 +93,7 @@ public class Play extends GameState {
         stage = new Stage(game.getViewport());
         scoreLabel = new TypingLabel(LOAD_SCORE_EFFECT + "SCORE: ", KnownFonts.getIBM8x16());
         pointLabel = new TypingLabel(LOAD_POINTS_EFFECT + score.getPoints(), KnownFonts.getIBM8x16());
-//        game.getInputMultiplexer().addProcessor(stage);
+        //game.getInputMultiplexer().addProcessor(stage);  // In play area stage should not have involvment in controls
         stage.addActor(scoreLabel);
         Table root = new Table();
         root.setSkin(skin);
@@ -185,7 +187,7 @@ public class Play extends GameState {
         // render assets for parallax effect
         game.getTmr().render(lastLayers);
         //render debug boxes
-//        b2drDebug.render(world, b2DCam.combined);
+        //b2drDebug.render(world, b2DCam.combined);
         stage.getViewport().apply();
         stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 144f));
         stage.draw();
@@ -281,8 +283,8 @@ public class Play extends GameState {
             }
         });
         overlayRoot.add(testButton).align(Align.center).align(Align.left)
-            .minWidth(Gdx.graphics.getWidth()/6f)
-            .minHeight(Gdx.graphics.getHeight()/3f)
+            .minWidth(Gdx.graphics.getWidth() / 6f)
+            .minHeight(Gdx.graphics.getHeight() / 3f)
             .padLeft(5)
             .expand();
 //        overlayRoot.debug();

@@ -1,17 +1,17 @@
 package com.turmoillift2.entities;
 
+import static com.turmoillift2.handlers.B2DVars.PPM;
+
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.utils.Array;
-import com.turmoillift2.entities.projectiles.*;
+import com.turmoillift2.entities.projectiles.BasicProjectileFactory;
 import com.turmoillift2.entities.projectiles.Projectile;
 import com.turmoillift2.entities.projectiles.ProjectileFactory;
 import com.turmoillift2.entities.projectiles.ProjectileType;
 import com.turmoillift2.main.TurmoilLiftoff2;
-
-import static com.turmoillift2.handlers.B2DVars.PPM;
 
 public class Player extends B2DSprite implements Killable {
     private float timerMove_t = 1 / 10f; // testing out different values
@@ -23,7 +23,7 @@ public class Player extends B2DSprite implements Killable {
     private HealthBar healthBar;
     private Sound playerHitSound;
     private Sound playerFireSound;
-    private  Sound playerDeadSound;
+    private Sound playerDeadSound;
 
 
     private int lives = 3;

@@ -1,5 +1,7 @@
 package com.turmoillift2.entities.enemies;
 
+import static com.turmoillift2.handlers.B2DVars.PPM;
+
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -10,8 +12,6 @@ import com.turmoillift2.entities.EntityOrientation;
 import com.turmoillift2.entities.HealthBar;
 import com.turmoillift2.entities.Killable;
 import com.turmoillift2.main.TurmoilLiftoff2;
-
-import static com.turmoillift2.handlers.B2DVars.PPM;
 
 public class Enemy extends B2DSprite implements Killable {
     protected boolean isAlive = true;

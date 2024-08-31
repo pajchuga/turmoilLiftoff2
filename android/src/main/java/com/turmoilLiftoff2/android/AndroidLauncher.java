@@ -9,7 +9,9 @@ import com.badlogic.gdx.backends.android.AndroidAudio;
 import com.badlogic.gdx.backends.android.AsynchronousAndroidAudio;
 import com.turmoillift2.main.TurmoilLiftoff2;
 
-/** Launches the Android application. */
+/**
+ * Launches the Android application.
+ */
 public class AndroidLauncher extends AndroidApplication {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
