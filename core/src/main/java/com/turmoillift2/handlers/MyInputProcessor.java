@@ -1,9 +1,11 @@
 package com.turmoillift2.handlers;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
 
 public class MyInputProcessor extends InputAdapter {
+
     @Override
     public boolean keyDown(int k) {
         if (k == Input.Keys.P) {

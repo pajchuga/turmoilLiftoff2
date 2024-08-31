@@ -65,12 +65,12 @@ public class TurmoilLiftoff2 extends Game {
         resource.loadTexture("animations/healthbarAnimatedRed.png", "healthbarEnemy");
         resource.loadTexture("animations/FrogMove.png", "frogMove");
         resource.loadSound("sound/ButtonHover.mp3", "buttonHoverSound");
-        resource.loadSound("sound/EnemyHit.mp3", "enemyHitSound");
-        resource.loadSound("sound/PlayerHit.mp3", "playerHitSound");
+        resource.loadSound("sound/EnemyHit.wav", "enemyHitSound");
+        resource.loadSound("sound/PlayerHit.wav", "playerHitSound");
         resource.loadSound("sound/TitleTheme.mp3", "titleThemeSound");
         resource.loadSound("sound/BattleTheme.mp3", "battleThemeSound");
-        resource.loadSound("sound/PlayerFire.mp3", "playerFireSound");
-        resource.loadSound("sound/LoseGame.mp3", "playerDeadSound");
+        resource.loadSound("sound/PlayerFire.wav", "playerFireSound");
+        resource.loadSound("sound/LoseGame.wav", "playerDeadSound");
 
         // other init
         this.inputMultiplexer = new InputMultiplexer();

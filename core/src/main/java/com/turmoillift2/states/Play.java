@@ -1,18 +1,27 @@
 package com.turmoillift2.states;
 
 
+import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
+import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.ImageTextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.IntIntMap;
 import com.badlogic.gdx.utils.ScreenUtils;
+import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.github.tommyettinger.textra.KnownFonts;
 import com.github.tommyettinger.textra.TypingLabel;
 import com.turmoillift2.entities.Player;
@@ -52,9 +61,12 @@ public class Play extends GameState {
     private final Skin skin;
     private final TypingLabel scoreLabel;
     private final TypingLabel pointLabel;
+    private  Stage stageAndroidOverlay;
 
     private final int[] firstLayers = {0, 1};
     private final int[] lastLayers = {2};
+
+    private Application.ApplicationType appType;
 
 
     public Play(GameStateManager gsm) {
@@ -77,11 +89,10 @@ public class Play extends GameState {
         //TODO Refactor later, just testing right now
         skin = new Skin(Gdx.files.internal("ui/test2/uiskin.json"));
         stage = new Stage(game.getViewport());
-        scoreLabel = new TypingLabel(LOAD_SCORE_EFFECT+"SCORE: ", KnownFonts.getIBM8x16());
+        scoreLabel = new TypingLabel(LOAD_SCORE_EFFECT + "SCORE: ", KnownFonts.getIBM8x16());
         pointLabel = new TypingLabel(LOAD_POINTS_EFFECT + score.getPoints(), KnownFonts.getIBM8x16());
-        game.getInputMultiplexer().addProcessor(stage);
+//        game.getInputMultiplexer().addProcessor(stage);
         stage.addActor(scoreLabel);
-        game.getInputMultiplexer().addProcessor(stage);
         Table root = new Table();
         root.setSkin(skin);
         root.setFillParent(true);
@@ -89,12 +100,15 @@ public class Play extends GameState {
         stage.addActor(root);
         root.right().top().padTop(8);
         root.add(scoreLabel).align(Align.right).minWidth(40);
-        root.add(pointLabel).align(Align.right).minWidth(120);
+        root.add(pointLabel).align(Align.right).minWidth(120).padLeft(5);
 
         // Sounds
         battleTheme = TurmoilLiftoff2.resource.getSound("battleThemeSound");
         battleTheme.loop(0.15f);
-
+        appType = Gdx.app.getType();
+        if (appType == Application.ApplicationType.Android) {
+            initOverlay();
+        }
     }
 
     @Override
@@ -139,6 +153,8 @@ public class Play extends GameState {
     @Override
     public void render() {
         ScreenUtils.clear(0.37f, 0.75f, 0.85f, 1);
+        stage.getViewport().apply();
+
         spriteBatch.setProjectionMatrix(camera.combined);
 
         // start batch draw
@@ -170,8 +186,16 @@ public class Play extends GameState {
         game.getTmr().render(lastLayers);
         //render debug boxes
 //        b2drDebug.render(world, b2DCam.combined);
+        stage.getViewport().apply();
         stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 144f));
         stage.draw();
+
+        if (stageAndroidOverlay != null) {
+            stageAndroidOverlay.getViewport().apply();
+            stageAndroidOverlay.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 144f));
+            stageAndroidOverlay.draw();
+        }
+
     }
 
     @Override
@@ -232,6 +256,36 @@ public class Play extends GameState {
         }
         player.update(dt);
         player.getHealthBar().update(dt);
+    }
+
+    private void initOverlay() {
+        stageAndroidOverlay = new Stage(new ScreenViewport());
+        game.getInputMultiplexer().addProcessor(stageAndroidOverlay);
+        Table overlayRoot = new Table();
+        overlayRoot.setSkin(skin);
+        overlayRoot.setFillParent(true);
+        overlayRoot.top();
+        stageAndroidOverlay.addActor(overlayRoot);
+
+        TextButton testButton = new TextButton("Test", skin);
+        testButton.addListener(new ClickListener() {
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                MyInput.setKey(MyInput.ATTACK_BUTTON, true);
+                return true;
+            }
+
+            @Override
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                MyInput.setKey(MyInput.ATTACK_BUTTON, false);
+            }
+        });
+        overlayRoot.add(testButton).align(Align.center).align(Align.left)
+            .minWidth(Gdx.graphics.getWidth()/6f)
+            .minHeight(Gdx.graphics.getHeight()/3f)
+            .padLeft(5)
+            .expand();
+//        overlayRoot.debug();
     }
 
 }

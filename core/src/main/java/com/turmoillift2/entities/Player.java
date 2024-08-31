@@ -61,6 +61,7 @@ public class Player extends B2DSprite implements Killable {
         }
         if (state == PlayerState.HIT && animation.getTimesPlayed() > 1) {
             state = PlayerState.IDLE;
+            projectileFactory.setCreateEnable(true);
             setStateAnimation();
         }
         if (timerMove > 0) {
